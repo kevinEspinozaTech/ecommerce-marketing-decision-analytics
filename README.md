@@ -1,17 +1,21 @@
-# N8N Automation Projects
+# E-commerce Marketing Decision Analytics
 
-A learning and portfolio repository for automation, APIs, and AI agent workflows built with [n8n](https://n8n.io/).
+**Where should a growing e-commerce business with a limited marketing budget focus next?**
 
-## Purpose
+This project builds an end-to-end decision-support system for a **fictional** e-commerce company whose sales are growing more slowly than expected. Instead of spending more across the board, the company needs evidence on which product categories are truly profitable, which carry operational risk (returns, cancellations), and where marketing effort is most likely to pay off.
 
-This repository documents a hands-on journey into workflow automation — starting with guided learning exercises and growing into original, professional-grade automation projects for a Data/AI portfolio.
+> **Data note:** the analysis uses the public [TheLook eCommerce](https://console.cloud.google.com/marketplace/product/bigquery-public-data/thelook-ecommerce) dataset on Google BigQuery, which is **synthetic**. All figures describe this dataset only, never a real company.
 
-It serves two goals:
+## Project Progress
 
-1. **Learning log** — a structured place to practice n8n, API integrations, and AI agent design.
-2. **Portfolio** — a curated showcase of polished, well-documented automation projects that demonstrate real-world automation and AI engineering skills.
+| Stage | Focus | Status |
+|---|---|---|
+| 0 | Environment and repository setup | ✅ Completed |
+| 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
+| 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
+| 3+ | Data model, Power BI dashboard, then n8n and AI-assisted automation | 🚧 In progress / planned |
 
-The repository is expected to evolve over time: early folders will contain simple tutorial-style workflows, while later additions will reflect increasingly independent, production-quality automation projects.
+**Stage 2 highlights:** referential-integrity and date-consistency checks, documented revenue and COGS recognition rules by order status, monthly MoM/YoY performance, and a multi-dimensional Category Decision Model (Min-Max scoring plus sensitivity and robustness analysis).
 
 ## Technologies
 
