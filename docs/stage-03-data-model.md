@@ -370,7 +370,8 @@ RETURN
 - Dashboard page screenshots versioned under `powerbi/`; the `.pbit` template is not versioned for now.
 - **[BUSINESS RULE / DECISION]** Roadmap condensed to 8 stages (2026-10-15), because Stage 3 absorbed data modeling, DAX and dashboarding, originally planned as separate stages. Stage 4 = star products inside Outerwear & Coats (top 5 analyzed; advertising focused on the top 3 to 5). Stage 5 = marketing and creative decisions. Stage 6 = n8n automation and AI-assisted content with human review. Stage 7 = publication, metrics and feedback loop. Stage 8 = portfolio finalization.
 - **[ANALYTICAL ASSUMPTION]** TheLook has no marketing or campaign data, so Stage 5 decisions will be our own assumptions, researched from real marketing practice with cited sources, and clearly labeled as assumptions — never presented as findings from the dataset.
-- *Pending:* naming consistency (`dim_customer` singular vs. other table names; `Product_name` casing).
+- **[BUSINESS RULE / DECISION]** Naming kept as is (2026-10-15): no further columns or tables are renamed for consistency. Tables follow the pattern `fact_order_items` and singular dimensions (`dim_product`, `dim_customer`, `dim_date`). In `dim_product`, the source column `name` was removed from the model and a single product name column is kept. Column names are left as they appear in the model. Reason: the model is already validated (0 mismatches), and renaming columns risks breaking measures and visuals for no analytical gain.
+- *Pending:* whether the 24 products with an empty `brand` need a labeling rule.
 
 ## Concepts Learned
 
@@ -451,7 +452,6 @@ RETURN
 
 **Remaining before Stage 3 can be closed (Kevin's decision):**
 - Review and approval of the four-page dashboard.
-- Resolve the naming-consistency item (`dim_customer`, `Product_name` casing).
 - Decide whether the 24 products with an empty `brand` need a labeling rule (open since the snapshot work).
 
 ## Stage Log
