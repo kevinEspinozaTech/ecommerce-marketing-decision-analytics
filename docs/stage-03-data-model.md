@@ -1,6 +1,6 @@
 # Stage 03 — Data Model & Power BI
 
-**Stage 3 Status: IN PROGRESS** — the frozen snapshot (2026-10-07) was exported and verified, and the Power BI star schema, DAX measures, category decision model and a four-page dashboard have been built on top of it and validated against independent recomputations. Remaining before closing the stage: Kevin's review and approval, and the remaining item listed under Stage Validation.
+**Stage 3 Status: COMPLETE** (closed 2026-10-15) — the frozen snapshot (2026-10-07) was exported and verified; the Power BI star schema, DAX measures, category decision model and four-page dashboard were built on top of it and validated against independent recomputations; the stage was approved by Kevin on 2026-10-15.
 
 ## Stage Objective
 
@@ -207,7 +207,7 @@ The Closed Months family is the basis of the category decision (dashboard pages 
 
 **[BUSINESS RULE / DECISION]** `products.id` is the only key for `dim_product`. Product name is a descriptive attribute and must never be used as a key or as the sole grouping field — grouping by name would merge different products, in many cases across categories.
 
-**[BUSINESS RULE / DECISION]** The 2 unnamed products are **kept** (4 of their items are Complete and carry recognized revenue). In Power Query, their missing name is to be replaced with a visible label of the form `(unnamed) – id <id>`, so they remain identifiable and are not silently dropped or blank in visuals.
+**[BUSINESS RULE / DECISION]** The 2 unnamed products are **kept** (4 of their items are Complete and carry recognized revenue). In Power Query, their missing name was replaced with a visible label of the form `(unnamed) – id <id>` (applied and verified by Kevin), so they remain identifiable and are not silently dropped or blank in visuals.
 
 **[DATASET LIMITATION]** 24 products have an empty `brand`. No labeling rule is defined in Stage 3; see Decisions Made.
 
@@ -374,6 +374,7 @@ RETURN
 - **[BUSINESS RULE / DECISION]** Empty brands (2026-10-15): no labeling rule for products with an empty `brand` is defined in Stage 3; the product data is left as it is, and the question is revisited in Stage 4 only if one of those products reaches the star-product shortlist (brand matters for advertising). Reason: `brand` is not used by the category decision model, so it does not affect any dashboard figure.
 - **[OBSERVED FACT]** Recomputed from the snapshot CSVs on 2026-10-15: of the 24 products with an empty `brand`, 3 are in Outerwear & Coats; only one of those 3 had sales in the closed months, with 1 item, ranking 886th of 1,111 products with sales in that category by gross profit.
 - **[DATASET LIMITATION]** Product-level samples are small. In Outerwear & Coats, the top 10 products by gross profit (closed months) sold between 2 and 5 items each, so product-level rates such as return rate must be interpreted with caution in Stage 4.
+- **[BUSINESS RULE / DECISION]** Stage 3 closed (2026-10-15) after Kevin's approval; Stage 4 (star products inside Outerwear & Coats) is next.
 
 ## Concepts Learned
 
@@ -450,10 +451,7 @@ RETURN
 
 ## Stage Validation
 
-**Validated so far:** the Power BI model reproduces the snapshot reference and the Stage 2 category ranking exactly (see **Validation of the Power BI Model**).
-
-**Remaining before Stage 3 can be closed (Kevin's decision):**
-- Review and approval of the four-page dashboard.
+The Power BI model reproduces the snapshot reference and the Stage 2 category ranking exactly (see **Validation of the Power BI Model**), and Kevin approved the four-page dashboard on 2026-10-15. No items remain open.
 
 ## Stage Log
 
@@ -464,5 +462,6 @@ RETURN
 - **Dashboard screenshots (2026-10-15):** exported the dashboard to PDF and converted it to 4 PNG images under `powerbi/` (one per page); the PDF itself is not versioned.
 - **Roadmap condensation (2026-10-15):** condensed the project roadmap to 8 stages (Stage 0 through Stage 8) and updated `README.md`; the closed docs for Stages 1 and 2 were left unchanged because they record the plan as it was then.
 - **Open items resolved (2026-10-15):** dashboard screenshots stored under `powerbi/`; naming kept as is; no labeling rule for empty brands for now. The only remaining item is the approval of the dashboard.
+- **Stage closed (2026-10-15):** Kevin approved the four-page dashboard; Stage 3 closed.
 
-**Stage 3 Status: IN PROGRESS**
+**Stage 3 Status: COMPLETE** (closed 2026-10-15)

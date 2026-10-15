@@ -13,7 +13,7 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 0 | Environment and repository setup | ✅ Completed |
 | 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
-| 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | 🚧 In progress |
+| 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | ✅ Completed |
 | 4 | Star products inside the winning category (Outerwear & Coats) | Planned |
 | 5 | Marketing and creative decisions for the top products (assumption-based, because TheLook has no marketing data) | Planned |
 | 6 | n8n automation and AI-assisted content generation, with human review before publishing | Planned |
@@ -75,7 +75,7 @@ This is where exported n8n workflow JSON files live, organized by maturity:
 
 ### `docs/`
 
-Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, and `stage-03-data-model.md` (in progress).
+Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, and `stage-03-data-model.md`.
 
 ### `sql/`
 
@@ -148,7 +148,7 @@ Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-nam
 - Stage Validation
 - Stage Log
 
-Sections are filled in progressively as each stage advances rather than all at once. Three such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), and `docs/stage-03-data-model.md` (Stage 3, in progress).
+Sections are filled in progressively as each stage advances rather than all at once. Three such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), and `docs/stage-03-data-model.md` (Stage 3, complete).
 
 ## ⚠️ Security: Credentials and Secrets
 
@@ -164,4 +164,4 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Status
 
-✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 (Data Model & Power BI) is **in progress** — the frozen snapshot of TheLook (2026-10-07) has been exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard have been built and validated; the stage remains in progress pending final review — see `docs/stage-03-data-model.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. ✅ Stage 3 (Data Model & Power BI) is complete (closed 2026-10-15) — the frozen snapshot of TheLook (2026-10-07) was exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard were built and validated — see `docs/stage-03-data-model.md`. Stage 4 (star products inside the winning category) is next. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
