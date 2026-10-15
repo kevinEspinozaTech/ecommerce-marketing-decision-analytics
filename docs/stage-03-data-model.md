@@ -368,12 +368,13 @@ RETURN
 - Table Total row switched off on page 3; page 1 chart does not cross-filter the KPI cards.
 - `.pbix` stays outside the repository because it embeds the data.
 - Dashboard page screenshots versioned under `powerbi/`; the `.pbit` template is not versioned for now.
-- **[BUSINESS RULE / DECISION]** Roadmap condensed to 8 stages (2026-10-15), because Stage 3 absorbed data modeling, DAX and dashboarding, originally planned as separate stages. Stage 4 = star products inside Outerwear & Coats (top 5 analyzed; advertising focused on the top 3 to 5). Stage 5 = marketing and creative decisions. Stage 6 = n8n automation and AI-assisted content with human review. Stage 7 = publication, metrics and feedback loop. Stage 8 = portfolio finalization.
+- **[BUSINESS RULE / DECISION]** Roadmap condensed to 8 stages (2026-10-15), because Stage 3 absorbed data modeling, DAX and dashboarding, originally planned as separate stages. Stage 4 = star products inside Outerwear & Coats (top 5 analyzed; advertising focused on the top 3 to 5). Stage 5 = marketing and creative decisions. Stage 6 = n8n automation and AI-assisted content with human review. Stage 7 = publication, metrics and feedback loop. Stage 8 = portfolio finalization. (superseded by the 7-stage decision below)
 - **[ANALYTICAL ASSUMPTION]** TheLook has no marketing or campaign data, so Stage 5 decisions will be our own assumptions, researched from real marketing practice with cited sources, and clearly labeled as assumptions — never presented as findings from the dataset.
 - **[BUSINESS RULE / DECISION]** Naming kept as is (2026-10-15): no further columns or tables are renamed for consistency. Tables follow the pattern `fact_order_items` and singular dimensions (`dim_product`, `dim_customer`, `dim_date`). In `dim_product`, the source column `name` was removed from the model and a single product name column is kept. Column names are left as they appear in the model. Reason: the model is already validated (0 mismatches), and renaming columns risks breaking measures and visuals for no analytical gain.
 - **[BUSINESS RULE / DECISION]** Empty brands (2026-10-15): no labeling rule for products with an empty `brand` is defined in Stage 3; the product data is left as it is, and the question is revisited in Stage 4 only if one of those products reaches the star-product shortlist (brand matters for advertising). Reason: `brand` is not used by the category decision model, so it does not affect any dashboard figure.
 - **[OBSERVED FACT]** Recomputed from the snapshot CSVs on 2026-10-15: of the 24 products with an empty `brand`, 3 are in Outerwear & Coats; only one of those 3 had sales in the closed months, with 1 item, ranking 886th of 1,111 products with sales in that category by gross profit.
 - **[DATASET LIMITATION]** Product-level samples are small. In Outerwear & Coats, the top 10 products by gross profit (closed months) sold between 2 and 5 items each, so product-level rates such as return rate must be interpreted with caution in Stage 4.
+- **[BUSINESS RULE / DECISION]** Roadmap condensed further to 7 stages (2026-10-15). Publication, performance metrics and the feedback loop are out of scope: no content is published and no performance is measured; a feedback loop is future work only. Stage 6 ends with automatically generated campaign content; Stage 7 = portfolio finalization.
 - **[BUSINESS RULE / DECISION]** Stage 3 closed (2026-10-15) after Kevin's approval; Stage 4 (star products inside Outerwear & Coats) is next.
 
 ## Concepts Learned
@@ -463,5 +464,6 @@ The Power BI model reproduces the snapshot reference and the Stage 2 category ra
 - **Roadmap condensation (2026-10-15):** condensed the project roadmap to 8 stages (Stage 0 through Stage 8) and updated `README.md`; the closed docs for Stages 1 and 2 were left unchanged because they record the plan as it was then.
 - **Open items resolved (2026-10-15):** dashboard screenshots stored under `powerbi/`; naming kept as is; no labeling rule for empty brands for now. The only remaining item is the approval of the dashboard.
 - **Stage closed (2026-10-15):** Kevin approved the four-page dashboard; Stage 3 closed.
+- **Roadmap narrowed (2026-10-15):** roadmap narrowed to 7 stages (Stage 0 through Stage 7); `README.md` updated.
 
 **Stage 3 Status: COMPLETE** (closed 2026-10-15)

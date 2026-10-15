@@ -16,11 +16,10 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | ✅ Completed |
 | 4 | Star products inside the winning category (Outerwear & Coats) | Planned |
 | 5 | Marketing and creative decisions for the top products (assumption-based, because TheLook has no marketing data) | Planned |
-| 6 | n8n automation and AI-assisted content generation, with human review before publishing | Planned |
-| 7 | Publication, performance metrics and feedback loop | Planned |
-| 8 | Portfolio finalization | Planned |
+| 6 | n8n automation and AI-assisted generation of campaign content (nothing is published) | Planned |
+| 7 | Portfolio finalization | Planned |
 
-Stages 4 to 8 are planned and may be refined as each stage begins.
+Stages 4 to 7 are planned and may be refined as each stage begins. The project ends with automatically generated campaign content: it does not publish to any platform or measure performance, and a publication and feedback loop is described only as possible future work.
 
 ![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
 
@@ -124,14 +123,14 @@ data/
 
 notebooks/        # Jupyter notebooks (Python analysis)
 content/          # AI-generated content artifacts (later stages)
-results/          # Outputs, findings, and performance metrics
+results/          # Outputs and findings (generated campaign content and analysis results)
 ```
 
 None of these remaining folders exist in the repository yet (`powerbi/`, originally planned here, was added in Stage 3 and is now listed under Folder Structure).
 
 ## Development Approach — Stage-Based Workflow
 
-This project is built in numbered stages (Stage 0 through Stage 8), each producing working output, documentation, and a Git commit before moving to the next stage — stages are not skipped even when a tool could technically do the work automatically.
+This project is built in numbered stages (Stage 0 through Stage 7), each producing working output, documentation, and a Git commit before moving to the next stage — stages are not skipped even when a tool could technically do the work automatically.
 
 Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-name.md` that doubles as professional project documentation and a stage log. Its sections:
 
@@ -160,7 +159,7 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Pending Decisions
 
-- **License** — this is a public repository, so a license (e.g. MIT) is likely appropriate, but the choice is deferred until closer to Stage 8. We want to decide deliberately what a license should permit regarding the code and n8n workflows in this portfolio, rather than defaulting to one now.
+- **License** — this is a public repository, so a license (e.g. MIT) is likely appropriate, but the choice is deferred until closer to Stage 7. We want to decide deliberately what a license should permit regarding the code and n8n workflows in this portfolio, rather than defaulting to one now.
 
 ## Status
 
