@@ -1,6 +1,6 @@
 # Stage 03 — Data Model & Power BI
 
-**Stage 3 Status: IN PROGRESS** — the frozen snapshot (2026-10-07) was exported and verified, and the Power BI star schema, DAX measures, category decision model and a four-page dashboard have been built on top of it and validated against independent recomputations. Remaining before closing the stage: Kevin's review and approval, and the open items listed under Stage Validation.
+**Stage 3 Status: IN PROGRESS** — the frozen snapshot (2026-10-07) was exported and verified, and the Power BI star schema, DAX measures, category decision model and a four-page dashboard have been built on top of it and validated against independent recomputations. Remaining before closing the stage: Kevin's review and approval, and the remaining item listed under Stage Validation.
 
 ## Stage Objective
 
@@ -209,7 +209,7 @@ The Closed Months family is the basis of the category decision (dashboard pages 
 
 **[BUSINESS RULE / DECISION]** The 2 unnamed products are **kept** (4 of their items are Complete and carry recognized revenue). In Power Query, their missing name is to be replaced with a visible label of the form `(unnamed) – id <id>`, so they remain identifiable and are not silently dropped or blank in visuals.
 
-**[DATASET LIMITATION]** 24 products have an empty `brand`. No labeling rule has been decided for them yet.
+**[DATASET LIMITATION]** 24 products have an empty `brand`. No labeling rule is defined in Stage 3; see Decisions Made.
 
 ## Power BI Data Model
 
@@ -371,7 +371,9 @@ RETURN
 - **[BUSINESS RULE / DECISION]** Roadmap condensed to 8 stages (2026-10-15), because Stage 3 absorbed data modeling, DAX and dashboarding, originally planned as separate stages. Stage 4 = star products inside Outerwear & Coats (top 5 analyzed; advertising focused on the top 3 to 5). Stage 5 = marketing and creative decisions. Stage 6 = n8n automation and AI-assisted content with human review. Stage 7 = publication, metrics and feedback loop. Stage 8 = portfolio finalization.
 - **[ANALYTICAL ASSUMPTION]** TheLook has no marketing or campaign data, so Stage 5 decisions will be our own assumptions, researched from real marketing practice with cited sources, and clearly labeled as assumptions — never presented as findings from the dataset.
 - **[BUSINESS RULE / DECISION]** Naming kept as is (2026-10-15): no further columns or tables are renamed for consistency. Tables follow the pattern `fact_order_items` and singular dimensions (`dim_product`, `dim_customer`, `dim_date`). In `dim_product`, the source column `name` was removed from the model and a single product name column is kept. Column names are left as they appear in the model. Reason: the model is already validated (0 mismatches), and renaming columns risks breaking measures and visuals for no analytical gain.
-- *Pending:* whether the 24 products with an empty `brand` need a labeling rule.
+- **[BUSINESS RULE / DECISION]** Empty brands (2026-10-15): no labeling rule for products with an empty `brand` is defined in Stage 3; the product data is left as it is, and the question is revisited in Stage 4 only if one of those products reaches the star-product shortlist (brand matters for advertising). Reason: `brand` is not used by the category decision model, so it does not affect any dashboard figure.
+- **[OBSERVED FACT]** Recomputed from the snapshot CSVs on 2026-10-15: of the 24 products with an empty `brand`, 3 are in Outerwear & Coats; only one of those 3 had sales in the closed months, with 1 item, ranking 886th of 1,111 products with sales in that category by gross profit.
+- **[DATASET LIMITATION]** Product-level samples are small. In Outerwear & Coats, the top 10 products by gross profit (closed months) sold between 2 and 5 items each, so product-level rates such as return rate must be interpreted with caution in Stage 4.
 
 ## Concepts Learned
 
@@ -452,7 +454,6 @@ RETURN
 
 **Remaining before Stage 3 can be closed (Kevin's decision):**
 - Review and approval of the four-page dashboard.
-- Decide whether the 24 products with an empty `brand` need a labeling rule (open since the snapshot work).
 
 ## Stage Log
 
@@ -462,5 +463,6 @@ RETURN
 - **Power BI model, measures and dashboard (through 2026-10-15):** built the star schema and date table from the snapshot CSVs; implemented the Baseline and Closed Months measure families, the operational-cohort rates and the Stage 2 category decision model in DAX; built a four-page dashboard in English on a 1920 × 1080 canvas (validation, executive summary, category decision, robustness and limitations); removed the temporary test measures; saved a `.pbit` template locally. Recomputed every dashboard figure independently from the snapshot CSVs: no differences, including 0 mismatches over the 26-category table.
 - **Dashboard screenshots (2026-10-15):** exported the dashboard to PDF and converted it to 4 PNG images under `powerbi/` (one per page); the PDF itself is not versioned.
 - **Roadmap condensation (2026-10-15):** condensed the project roadmap to 8 stages (Stage 0 through Stage 8) and updated `README.md`; the closed docs for Stages 1 and 2 were left unchanged because they record the plan as it was then.
+- **Open items resolved (2026-10-15):** dashboard screenshots stored under `powerbi/`; naming kept as is; no labeling rule for empty brands for now. The only remaining item is the approval of the dashboard.
 
 **Stage 3 Status: IN PROGRESS**
