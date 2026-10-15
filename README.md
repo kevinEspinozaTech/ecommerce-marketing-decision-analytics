@@ -13,7 +13,17 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 0 | Environment and repository setup | ✅ Completed |
 | 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
-| 3+ | Data model, Power BI dashboard, then n8n and AI-assisted automation | 🚧 In progress / planned |
+| 3+ | Data model, Power BI dashboard, then n8n and AI-assisted automation ([docs](docs/stage-03-data-model.md)) | 🚧 In progress / planned |
+
+![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
+
+*Stage 3 Power BI dashboard — Executive summary page (frozen snapshot 2026-10-07; synthetic data).*
+
+Other dashboard pages:
+
+- [Model validation](powerbi/01-model-validation.png)
+- [Category decision](powerbi/03-category-decision.png)
+- [Robustness & limitations](powerbi/04-robustness-limitations.png)
 
 **Stage 2 highlights:** referential-integrity and date-consistency checks, documented revenue and COGS recognition rules by order status, monthly MoM/YoY performance, and a multi-dimensional Category Decision Model (Min-Max scoring plus sensitivity and robustness analysis).
 
@@ -148,13 +158,3 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 ## Status
 
 ✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 (Data Model & Power BI) is **in progress** — the frozen snapshot of TheLook (2026-10-07) has been exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard have been built and validated; the stage remains in progress pending final review — see `docs/stage-03-data-model.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
-
-![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
-
-*Stage 3 Power BI dashboard — Executive summary page (frozen snapshot 2026-10-07; synthetic data).*
-
-Other dashboard pages:
-
-- [Model validation](powerbi/01-model-validation.png)
-- [Category decision](powerbi/03-category-decision.png)
-- [Robustness & limitations](powerbi/04-robustness-limitations.png)
