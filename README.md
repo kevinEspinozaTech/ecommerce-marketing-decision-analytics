@@ -14,7 +14,7 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
 | 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | ✅ Completed |
-| 4 | Star products inside the winning category (Outerwear & Coats) | Planned |
+| 4 | Star products inside the winning category (Outerwear & Coats) ([docs](docs/stage-04-star-products.md)) | 🚧 In progress |
 | 5 | Marketing and creative decisions for the top products (assumption-based, because TheLook has no marketing data) | Planned |
 | 6 | n8n automation and AI-assisted generation of campaign content (nothing is published) | Planned |
 | 7 | Portfolio finalization | Planned |
@@ -52,7 +52,8 @@ Other dashboard pages:
 ├── docs/                    # Notes, guides, and project documentation
 │   ├── stage-01-business-case.md
 │   ├── stage-02-data-preparation.md
-│   └── stage-03-data-model.md
+│   ├── stage-03-data-model.md
+│   └── stage-04-star-products.md
 ├── sql/                     # SQL scripts (added in Stage 2 — see below)
 ├── data/
 │   └── raw/                 # Frozen dataset snapshots (added in Stage 3 — see below)
@@ -74,7 +75,7 @@ This is where exported n8n workflow JSON files live, organized by maturity:
 
 ### `docs/`
 
-Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, and `stage-03-data-model.md`.
+Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, `stage-03-data-model.md`, and `stage-04-star-products.md` (in progress).
 
 ### `sql/`
 
@@ -112,7 +113,7 @@ Reusable workflow skeletons, starter nodes, and boilerplate patterns that can be
 
 ## Planned Architecture (Future Stages)
 
-The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, `powerbi/` (dashboard screenshots, added in Stage 3), and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
+The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, `powerbi/` (dashboard screenshots, added in Stage 3), and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` / `docs/stage-04-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
 
 ```
 data/
@@ -147,7 +148,7 @@ Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-nam
 - Stage Validation
 - Stage Log
 
-Sections are filled in progressively as each stage advances rather than all at once. Three such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), and `docs/stage-03-data-model.md` (Stage 3, complete).
+Sections are filled in progressively as each stage advances rather than all at once. Four such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), `docs/stage-03-data-model.md` (Stage 3, complete), and `docs/stage-04-star-products.md` (Stage 4, in progress).
 
 ## ⚠️ Security: Credentials and Secrets
 
@@ -163,4 +164,4 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Status
 
-✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. ✅ Stage 3 (Data Model & Power BI) is complete (closed 2026-10-15) — the frozen snapshot of TheLook (2026-10-07) was exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard were built and validated — see `docs/stage-03-data-model.md`. Stage 4 (star products inside the winning category) is next. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. ✅ Stage 3 (Data Model & Power BI) is complete (closed 2026-10-15) — the frozen snapshot of TheLook (2026-10-07) was exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard were built and validated — see `docs/stage-03-data-model.md`. 🚧 Stage 4 (star products inside the winning category) is in progress — see `docs/stage-04-star-products.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
