@@ -80,6 +80,11 @@ env/
 # ==========================================================
 ~$*.pbix
 
+# Power BI Project (.pbip) local files: the data cache holds the
+# imported (unversioned) snapshot rows; local settings are per user.
+**/.pbi/cache.abf
+**/.pbi/localSettings.json
+
 # ==========================================================
 # OS / editor junk
 # ==========================================================
@@ -93,3 +98,16 @@ desktop.ini
 # Dependencies (if any Node tooling is added later)
 # ==========================================================
 node_modules/
+
+# ==========================================================
+# Data snapshots — raw CSV extracts of TheLook are NOT committed:
+# redistribution licensing is unverified (Stage 1) and files
+# are large. Regenerate with scripts/export_snapshot.py.
+# Snapshot manifests (data/raw/manifest_*.json) ARE committed
+# as evidence: T, row counts, SHA-256, reference KPIs.
+# Category ranking references are also committed: they are
+# per-category aggregates with no personal data.
+# ==========================================================
+data/raw/*.csv
+!data/raw/category_ranking_reference_*.csv
+Claude outputs/

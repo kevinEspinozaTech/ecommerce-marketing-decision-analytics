@@ -35,8 +35,12 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 │   └── 03-portfolio-projects/ # Polished, portfolio-ready automations
 ├── docs/                    # Notes, guides, and project documentation
 │   ├── stage-01-business-case.md
-│   └── stage-02-data-preparation.md
+│   ├── stage-02-data-preparation.md
+│   └── stage-03-data-model.md
 ├── sql/                     # SQL scripts (added in Stage 2 — see below)
+├── data/
+│   └── raw/                 # Frozen dataset snapshots (added in Stage 3 — see below)
+├── scripts/                 # Python scripts (added in Stage 3 — see below)
 ├── templates/                # Reusable workflow templates and boilerplates
 ├── .gitignore
 └── README.md
@@ -52,7 +56,7 @@ This is where exported n8n workflow JSON files live, organized by maturity:
 
 ### `docs/`
 
-Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. As of Stage 2, this includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md` and `stage-02-data-preparation.md`.
+Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, and `stage-03-data-model.md` (in progress).
 
 ### `sql/`
 
@@ -65,17 +69,35 @@ Added in Stage 2. Contains the project's SQL scripts — currently BigQuery SQL 
 
 See `docs/stage-02-data-preparation.md` for the full analytical documentation and findings behind these queries.
 
+Added in Stage 3 (frozen snapshot preparation for the Power BI data model):
+
+- `05_snapshot_export.sql` — faithful, unjoined extracts of `order_items`, `inventory_items` (`id`, `product_id`, `cost`), `products`, and `users` (personal data excluded), all read at one instant via BigQuery time travel (`FOR SYSTEM_TIME AS OF`).
+- `06_snapshot_reference.sql` — reference evidence for a snapshot: row counts plus the Stage 2 financial baseline (same rules as `02`, Section 6), `complete_items`, and `future_complete_items`, run at the same instant as the export.
+
+### `data/`
+
+Added in Stage 3. `data/raw/` holds frozen snapshots of TheLook eCommerce used as the Power BI data source, named `<table>_YYYY-MM-DD.csv`, plus one `manifest_YYYY-MM-DD.json` per snapshot.
+
+- **Snapshot CSV files are not committed** (`data/raw/*.csv` is in `.gitignore`): TheLook's redistribution licensing has not been verified, and the files are large. Regenerate them with `scripts/export_snapshot.py`.
+- **Category ranking references are committed** (`category_ranking_reference_YYYY-MM-DD.csv`, a `.gitignore` exception): the `sql/04` Section 8 output at the snapshot instant — per-category aggregates only, no personal data.
+- **Manifests are committed** as evidence of each snapshot: snapshot instant (T), run start/end, row counts, file sizes, SHA-256 checksums, null counts, duplicate-id and orphan checks, reference KPIs, and a pandas double-check of those KPIs against the exported files.
+
+TheLook is synthetic and dynamic: each snapshot describes one instant and is not expected to match other snapshots or earlier Stage 2 figures.
+
+### `scripts/`
+
+Added in Stage 3. `export_snapshot.py` runs `sql/05` and `sql/06` against BigQuery (Application Default Credentials via `gcloud auth application-default login` — no credentials are stored in this repository), writes the CSV files and manifest to `data/raw/`, and verifies them. It refuses to overwrite existing snapshot files unless `--overwrite` is passed. Run `python scripts/export_snapshot.py --help` for its commands.
+
 ### `templates/`
 
 Reusable workflow skeletons, starter nodes, and boilerplate patterns that can be copied into new projects.
 
 ## Planned Architecture (Future Stages)
 
-The structure above (Folder Structure) reflects the **current state of the repository**, including what Stage 2 has added so far (`sql/`, and the `docs/stage-01-*.md` / `docs/stage-02-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
+The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
 
 ```
 data/
-├── raw/          # Original public dataset — never modified directly
 ├── synthetic/    # Data created to fill gaps in the public dataset;
 │                 # always clearly documented as synthetic, never
 │                 # presented as real
@@ -108,7 +130,7 @@ Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-nam
 - Stage Validation
 - Stage Log
 
-Sections are filled in progressively as each stage advances rather than all at once. Two such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete) and `docs/stage-02-data-preparation.md` (Stage 2, complete).
+Sections are filled in progressively as each stage advances rather than all at once. Three such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), and `docs/stage-03-data-model.md` (Stage 3, in progress).
 
 ## ⚠️ Security: Credentials and Secrets
 
@@ -124,4 +146,4 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Status
 
-✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 is next. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 (Data Model & Power BI) is in progress — a first frozen snapshot of TheLook (2026-10-07) has been exported and verified (`data/raw/manifest_2026-10-07.json`) — see `docs/stage-03-data-model.md`; the data model and dashboard have not been built yet. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.

@@ -1,0 +1,247 @@
+{
+  "dataset": "bigquery-public-data.thelook_ecommerce",
+  "snapshot_label": "2026-10-07",
+  "consistency_method": "time_travel",
+  "snapshot_ts_utc": "2026-10-07 13:27:26",
+  "run_start_utc": "2026-10-07 13:27:36",
+  "run_end_utc": "2026-10-07 13:29:05",
+  "time_travel_test": {
+    "order_items": {
+      "ok": true,
+      "rows": 181070
+    },
+    "inventory_items": {
+      "ok": true,
+      "rows": 488895
+    },
+    "products": {
+      "ok": true,
+      "rows": 29120
+    },
+    "users": {
+      "ok": true,
+      "rows": 100000
+    }
+  },
+  "files": {
+    "order_items": {
+      "file": "order_items_2026-10-07.csv",
+      "columns": [
+        "id",
+        "order_id",
+        "user_id",
+        "product_id",
+        "inventory_item_id",
+        "status",
+        "created_at",
+        "shipped_at",
+        "delivered_at",
+        "returned_at",
+        "sale_price"
+      ],
+      "rows": 181070,
+      "bytes": 17397153,
+      "size_mb": 16.59,
+      "sha256": "159b6abcd48f2b1459a7c7d9fa5b3de46e952fe9695605950ce7a0bdbde4c964",
+      "duplicate_ids": 0,
+      "null_counts": {
+        "id": 0,
+        "order_id": 0,
+        "user_id": 0,
+        "product_id": 0,
+        "inventory_item_id": 0,
+        "status": 0,
+        "created_at": 0,
+        "shipped_at": 63778,
+        "delivered_at": 118220,
+        "returned_at": 163195,
+        "sale_price": 0
+      },
+      "header_matches_approved": true,
+      "literal_null_tokens": {}
+    },
+    "inventory_items": {
+      "file": "inventory_items_2026-10-07.csv",
+      "columns": [
+        "id",
+        "product_id",
+        "cost"
+      ],
+      "rows": 488895,
+      "bytes": 15025384,
+      "size_mb": 14.33,
+      "sha256": "3b67c0ffd2fb41454ca9515da50493ee9880328d60c5b46a2f2018857502a0f5",
+      "duplicate_ids": 0,
+      "null_counts": {
+        "id": 0,
+        "product_id": 0,
+        "cost": 0
+      },
+      "header_matches_approved": true,
+      "literal_null_tokens": {}
+    },
+    "products": {
+      "file": "products_2026-10-07.csv",
+      "columns": [
+        "id",
+        "category",
+        "name",
+        "brand",
+        "retail_price",
+        "department"
+      ],
+      "rows": 29120,
+      "bytes": 2768850,
+      "size_mb": 2.64,
+      "sha256": "a63d56eddc3bf200405b9e7e9aa636064c9cd855f0c77e6aca812355ac2ab211",
+      "duplicate_ids": 0,
+      "null_counts": {
+        "id": 0,
+        "category": 0,
+        "name": 2,
+        "brand": 24,
+        "retail_price": 0,
+        "department": 0
+      },
+      "header_matches_approved": true,
+      "literal_null_tokens": {}
+    },
+    "users": {
+      "file": "users_2026-10-07.csv",
+      "columns": [
+        "id",
+        "age",
+        "gender",
+        "country",
+        "traffic_source",
+        "created_at"
+      ],
+      "rows": 100000,
+      "bytes": 4708886,
+      "size_mb": 4.49,
+      "sha256": "986fe979ffc6c5ac4fa5daeb54633d7b61490ab51f4f80141a26ec72747e76f3",
+      "duplicate_ids": 0,
+      "null_counts": {
+        "id": 0,
+        "age": 0,
+        "gender": 0,
+        "country": 0,
+        "traffic_source": 0,
+        "created_at": 0
+      },
+      "header_matches_approved": true,
+      "literal_null_tokens": {}
+    }
+  },
+  "reference_query": {
+    "snapshot_ts_utc": "2026-10-07 13:27:26",
+    "rows_order_items": 181070,
+    "rows_inventory_items": 488895,
+    "rows_products": 29120,
+    "rows_users": 100000,
+    "complete_items": 44975,
+    "future_complete_items": 1207,
+    "recognized_revenue": 2669599.03,
+    "recognized_cogs": 1284340.25,
+    "gross_profit": 1385258.79,
+    "gross_margin_pct": 51.89,
+    "pending_order_value": 5432791.03,
+    "return_associated_value": 1071349.32,
+    "cancelled_value": 1634399.09
+  },
+  "environment": {
+    "python": "3.13.14",
+    "pandas": "3.0.6",
+    "google-cloud-bigquery": "3.46.1"
+  },
+  "orphan_checks": {
+    "order_items.product_id not in products.id": 0,
+    "order_items.inventory_item_id not in inventory_items.id": 0,
+    "order_items.user_id not in users.id": 0,
+    "inventory_items.product_id not in products.id": 0
+  },
+  "pandas_double_check": {
+    "tolerance": 0.01,
+    "all_ok": true,
+    "metrics": {
+      "rows_order_items": {
+        "reference": 181070,
+        "pandas": 181070,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "rows_inventory_items": {
+        "reference": 488895,
+        "pandas": 488895,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "rows_products": {
+        "reference": 29120,
+        "pandas": 29120,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "rows_users": {
+        "reference": 100000,
+        "pandas": 100000,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "complete_items": {
+        "reference": 44975,
+        "pandas": 44975,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "future_complete_items": {
+        "reference": 1207,
+        "pandas": 1207,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "recognized_revenue": {
+        "reference": 2669599.03,
+        "pandas": 2669599.03,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "recognized_cogs": {
+        "reference": 1284340.25,
+        "pandas": 1284340.25,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "gross_profit": {
+        "reference": 1385258.79,
+        "pandas": 1385258.79,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "gross_margin_pct": {
+        "reference": 51.89,
+        "pandas": 51.89,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "pending_order_value": {
+        "reference": 5432791.03,
+        "pandas": 5432791.03,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "return_associated_value": {
+        "reference": 1071349.32,
+        "pandas": 1071349.32,
+        "abs_diff": 0.0,
+        "ok": true
+      },
+      "cancelled_value": {
+        "reference": 1634399.09,
+        "pandas": 1634399.09,
+        "abs_diff": 0.0,
+        "ok": true
+      }
+    }
+  }
+}
