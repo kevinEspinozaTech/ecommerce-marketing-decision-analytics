@@ -368,6 +368,8 @@ RETURN
 - Table Total row switched off on page 3; page 1 chart does not cross-filter the KPI cards.
 - `.pbix` stays outside the repository because it embeds the data.
 - Dashboard page screenshots versioned under `powerbi/`; the `.pbit` template is not versioned for now.
+- **[BUSINESS RULE / DECISION]** Roadmap condensed to 8 stages (2026-10-15), because Stage 3 absorbed data modeling, DAX and dashboarding, originally planned as separate stages. Stage 4 = star products inside Outerwear & Coats (top 5 analyzed; advertising focused on the top 3 to 5). Stage 5 = marketing and creative decisions. Stage 6 = n8n automation and AI-assisted content with human review. Stage 7 = publication, metrics and feedback loop. Stage 8 = portfolio finalization.
+- **[ANALYTICAL ASSUMPTION]** TheLook has no marketing or campaign data, so Stage 5 decisions will be our own assumptions, researched from real marketing practice with cited sources, and clearly labeled as assumptions — never presented as findings from the dataset.
 - *Pending:* naming consistency (`dim_customer` singular vs. other table names; `Product_name` casing).
 
 ## Concepts Learned
@@ -459,5 +461,6 @@ RETURN
 - **Reference results at T (2026-10-07):** ran `sql/04` Section 8 at T through a temporary, unversioned copy (`sql/04` unchanged); saved the 26-category ranking reference; compared the Robust Candidate shortlist with 2026-09-21; analyzed product-name uniqueness and unnamed products from the local CSVs; reconciled the ranking's scope with the financial baseline; added a `.gitignore` exception so category ranking references are versioned.
 - **Power BI model, measures and dashboard (through 2026-10-15):** built the star schema and date table from the snapshot CSVs; implemented the Baseline and Closed Months measure families, the operational-cohort rates and the Stage 2 category decision model in DAX; built a four-page dashboard in English on a 1920 × 1080 canvas (validation, executive summary, category decision, robustness and limitations); removed the temporary test measures; saved a `.pbit` template locally. Recomputed every dashboard figure independently from the snapshot CSVs: no differences, including 0 mismatches over the 26-category table.
 - **Dashboard screenshots (2026-10-15):** exported the dashboard to PDF and converted it to 4 PNG images under `powerbi/` (one per page); the PDF itself is not versioned.
+- **Roadmap condensation (2026-10-15):** condensed the project roadmap to 8 stages (Stage 0 through Stage 8) and updated `README.md`; the closed docs for Stages 1 and 2 were left unchanged because they record the plan as it was then.
 
 **Stage 3 Status: IN PROGRESS**

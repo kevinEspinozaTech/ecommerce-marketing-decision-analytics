@@ -13,7 +13,14 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 0 | Environment and repository setup | ✅ Completed |
 | 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
-| 3+ | Data model, Power BI dashboard, then n8n and AI-assisted automation ([docs](docs/stage-03-data-model.md)) | 🚧 In progress / planned |
+| 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | 🚧 In progress |
+| 4 | Star products inside the winning category (Outerwear & Coats) | Planned |
+| 5 | Marketing and creative decisions for the top products (assumption-based, because TheLook has no marketing data) | Planned |
+| 6 | n8n automation and AI-assisted content generation, with human review before publishing | Planned |
+| 7 | Publication, performance metrics and feedback loop | Planned |
+| 8 | Portfolio finalization | Planned |
+
+Stages 4 to 8 are planned and may be refined as each stage begins.
 
 ![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
 
@@ -124,7 +131,7 @@ None of these remaining folders exist in the repository yet (`powerbi/`, origina
 
 ## Development Approach — Stage-Based Workflow
 
-This project is built in numbered stages (Stage 0 through Stage 10), each producing working output, documentation, and a Git commit before moving to the next stage — stages are not skipped even when a tool could technically do the work automatically.
+This project is built in numbered stages (Stage 0 through Stage 8), each producing working output, documentation, and a Git commit before moving to the next stage — stages are not skipped even when a tool could technically do the work automatically.
 
 Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-name.md` that doubles as professional project documentation and a stage log. Its sections:
 
@@ -153,7 +160,7 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Pending Decisions
 
-- **License** — this is a public repository, so a license (e.g. MIT) is likely appropriate, but the choice is deferred until closer to Stage 10. We want to decide deliberately what a license should permit regarding the code and n8n workflows in this portfolio, rather than defaulting to one now.
+- **License** — this is a public repository, so a license (e.g. MIT) is likely appropriate, but the choice is deferred until closer to Stage 8. We want to decide deliberately what a license should permit regarding the code and n8n workflows in this portfolio, rather than defaulting to one now.
 
 ## Status
 
