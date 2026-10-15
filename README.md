@@ -41,6 +41,8 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 ├── data/
 │   └── raw/                 # Frozen dataset snapshots (added in Stage 3 — see below)
 ├── scripts/                 # Python scripts (added in Stage 3 — see below)
+├── powerbi/                 # Power BI dashboard screenshots (added in Stage 3);
+│                            # the .pbix and .pbit stay outside the repository
 ├── templates/                # Reusable workflow templates and boilerplates
 ├── .gitignore
 └── README.md
@@ -94,7 +96,7 @@ Reusable workflow skeletons, starter nodes, and boilerplate patterns that can be
 
 ## Planned Architecture (Future Stages)
 
-The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
+The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, `powerbi/` (dashboard screenshots, added in Stage 3), and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
 
 ```
 data/
@@ -104,12 +106,11 @@ data/
 └── processed/    # Cleaned/transformed output derived from raw + synthetic
 
 notebooks/        # Jupyter notebooks (Python analysis)
-powerbi/          # Power BI files and related assets
 content/          # AI-generated content artifacts (later stages)
 results/          # Outputs, findings, and performance metrics
 ```
 
-None of these remaining folders exist in the repository yet.
+None of these remaining folders exist in the repository yet (`powerbi/`, originally planned here, was added in Stage 3 and is now listed under Folder Structure).
 
 ## Development Approach — Stage-Based Workflow
 
@@ -146,4 +147,14 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Status
 
-✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 (Data Model & Power BI) is in progress — a first frozen snapshot of TheLook (2026-10-07) has been exported and verified (`data/raw/manifest_2026-10-07.json`) — see `docs/stage-03-data-model.md`; the data model and dashboard have not been built yet. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. 🚧 Stage 3 (Data Model & Power BI) is **in progress** — the frozen snapshot of TheLook (2026-10-07) has been exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard have been built and validated; the stage remains in progress pending final review — see `docs/stage-03-data-model.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+
+![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
+
+*Stage 3 Power BI dashboard — Executive summary page (frozen snapshot 2026-10-07; synthetic data).*
+
+Other dashboard pages:
+
+- [Model validation](powerbi/01-model-validation.png)
+- [Category decision](powerbi/03-category-decision.png)
+- [Robustness & limitations](powerbi/04-robustness-limitations.png)

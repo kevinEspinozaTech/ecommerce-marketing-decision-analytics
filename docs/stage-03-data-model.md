@@ -17,7 +17,7 @@ Build the Power BI data model (star schema at `order_item` grain) and the dashbo
   - `sql/06_snapshot_reference.sql` — reference KPIs at the snapshot instant.
   - `scripts/export_snapshot.py` — runs the export, the reference query, and all verifications; writes the manifest.
   - `data/raw/` — snapshot CSV files (not versioned) and evidence files (versioned): `manifest_2026-10-07.json` and `category_ranking_reference_2026-10-07.csv`.
-- **Power BI (outside the repository):** `Proyecto01_actualizado.pbix` is the working report. It embeds the snapshot data, so it is **not** versioned. A Power BI template (`.pbit`, model and pages without data) was also saved locally; whether it or page screenshots are stored under `powerbi/` is still to be decided.
+- **Power BI (outside the repository):** `Proyecto01_actualizado.pbix` is the working report. It embeds the snapshot data, so it is **never** versioned. A Power BI template (`.pbit`, model and pages without data) was also saved locally; it stays local and is not versioned for now. The four dashboard page screenshots are stored under `powerbi/`.
 - **Data source of the model:** the four snapshot CSVs (`order_items`, `inventory_items`, `products`, `users`) — never a live BigQuery connection (option C).
 - `sql/01`–`sql/04` and the Stage 2 methodology were **not** modified.
 
@@ -367,7 +367,8 @@ RETURN
 - Dashboard text in English; four pages on a 1920 × 1080 canvas; one accent colour reserved for the winner; `K | E` authorship mark and a data-limitation footnote on every page.
 - Table Total row switched off on page 3; page 1 chart does not cross-filter the KPI cards.
 - `.pbix` stays outside the repository because it embeds the data.
-- *Pending:* where (and whether) to version the `.pbit` template and page screenshots under `powerbi/`; naming consistency (`dim_customer` singular vs. other table names; `Product_name` casing).
+- Dashboard page screenshots versioned under `powerbi/`; the `.pbit` template is not versioned for now.
+- *Pending:* naming consistency (`dim_customer` singular vs. other table names; `Product_name` casing).
 
 ## Concepts Learned
 
@@ -411,8 +412,8 @@ RETURN
 
 ## PL-300 Connection
 
-- **Prepare the data:** documented, reproducible data source; column selection at source; null-handling rules (labeling unnamed products); locale awareness — CSVs use a decimal point, so Power Query must import them with an en-US locale.
-- **Model the data:** star schema at `order_item` grain with `products.id` as the product key; a separate Date table (to be built); multiple dates on the fact table (`created_at`, `delivered_at`) that will require an active/inactive relationship design.
+- **Prepare the data:** documented a reproducible data source; selected columns at the source; defined null-handling rules (labeling unnamed products); applied locale awareness — the CSVs use a decimal point, so Power Query had to import them with an en-US locale.
+- **Model the data:** designed a star schema at `order_item` grain with `products.id` as the product key and a separate Date table (`dim_date`); the multiple dates on the fact table (`created_at`, `delivered_at`) were handled with an active/inactive relationship design.
 - **DAX:** the baseline vs. historical cut-off measures are a direct example of filter-context-dependent measure design.
 - **Model the data (built):** star schema, marked date table, relationship cardinality and direction, an inactive relationship with `USERELATIONSHIP`.
 - **DAX (built):** `CALCULATE`, `ALL`, `VAR`, `TOPN`, `MAXX`, `RANKX`, `SELECTEDVALUE`, `SWITCH ( TRUE (), … )`, context transition, iterators.
@@ -436,6 +437,11 @@ RETURN
 - `data/raw/category_ranking_reference_2026-10-07.csv` — `sql/04` Section 8 output at T.
 - Power BI report `Proyecto01_actualizado.pbix` (outside the repository) — four pages: Validation, Executive summary, Category decision, Robustness & limitations.
 - Validation of the Power BI figures against the snapshot (see **Validation of the Power BI Model**).
+- Dashboard page screenshots:
+  - `powerbi/01-model-validation.png` — validation of the Power BI figures against the snapshot reference.
+  - `powerbi/02-executive-summary.png` — executive summary with the recommended category.
+  - `powerbi/03-category-decision.png` — category decision table comparing the 26 categories.
+  - `powerbi/04-robustness-limitations.png` — robustness of the ranking and dataset limitations.
 
 ## Stage Validation
 
@@ -443,7 +449,6 @@ RETURN
 
 **Remaining before Stage 3 can be closed (Kevin's decision):**
 - Review and approval of the four-page dashboard.
-- Decide whether to store the `.pbit` template and page screenshots under `powerbi/`.
 - Resolve the naming-consistency item (`dim_customer`, `Product_name` casing).
 - Decide whether the 24 products with an empty `brand` need a labeling rule (open since the snapshot work).
 
@@ -453,5 +458,6 @@ RETURN
 - **Snapshot preparation — execution (2026-10-07):** installed Google Cloud CLI and the BigQuery Python client; authenticated via Application Default Credentials; verified schemas; tested time travel (working on all 4 tables); measured table sizes and dry-run bytes (~43.6 MB processed); wrote `sql/05`, `sql/06`, and `scripts/export_snapshot.py`; exported the snapshot at T = 2026-10-07 13:27:26 UTC; all validations and the pandas double check passed. `.gitignore` updated (`data/raw/*.csv` ignored, manifests versioned) and `README.md` updated to reflect `data/` and `scripts/`.
 - **Reference results at T (2026-10-07):** ran `sql/04` Section 8 at T through a temporary, unversioned copy (`sql/04` unchanged); saved the 26-category ranking reference; compared the Robust Candidate shortlist with 2026-09-21; analyzed product-name uniqueness and unnamed products from the local CSVs; reconciled the ranking's scope with the financial baseline; added a `.gitignore` exception so category ranking references are versioned.
 - **Power BI model, measures and dashboard (through 2026-10-15):** built the star schema and date table from the snapshot CSVs; implemented the Baseline and Closed Months measure families, the operational-cohort rates and the Stage 2 category decision model in DAX; built a four-page dashboard in English on a 1920 × 1080 canvas (validation, executive summary, category decision, robustness and limitations); removed the temporary test measures; saved a `.pbit` template locally. Recomputed every dashboard figure independently from the snapshot CSVs: no differences, including 0 mismatches over the 26-category table.
+- **Dashboard screenshots (2026-10-15):** exported the dashboard to PDF and converted it to 4 PNG images under `powerbi/` (one per page); the PDF itself is not versioned.
 
 **Stage 3 Status: IN PROGRESS**
