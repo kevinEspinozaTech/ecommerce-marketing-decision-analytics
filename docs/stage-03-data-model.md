@@ -412,7 +412,7 @@ RETURN
 
 ## PL-300 Connection
 
-- **Prepare the data:** documented a reproducible data source; selected columns at the source; defined null-handling rules (labeling unnamed products); applied locale awareness — the CSVs use a decimal point, so Power Query had to import them with an en-US locale.
+- **Prepare the data:** documented a reproducible data source; selected columns at the source; defined null-handling rules (labeling unnamed products); noted that the CSVs use a decimal point, so an import under a regional setting with a decimal comma needs an explicit en-US locale. The model's figures reconcile with the independent recomputation to the cent, so no numeric import problem was observed.
 - **Model the data:** designed a star schema at `order_item` grain with `products.id` as the product key and a separate Date table (`dim_date`); the multiple dates on the fact table (`created_at`, `delivered_at`) were handled with an active/inactive relationship design.
 - **DAX:** the baseline vs. historical cut-off measures are a direct example of filter-context-dependent measure design.
 - **Model the data (built):** star schema, marked date table, relationship cardinality and direction, an inactive relationship with `USERELATIONSHIP`.
