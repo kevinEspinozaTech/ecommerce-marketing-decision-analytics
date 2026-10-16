@@ -14,8 +14,8 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 1 | Business case and dataset selection ([docs](docs/stage-01-business-case.md)) | ✅ Completed |
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
 | 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | ✅ Completed |
-| 4 | Star products inside the winning category (Outerwear & Coats) ([docs](docs/stage-04-star-products.md)) | 🚧 In progress |
-| 5 | Marketing and creative decisions for the top products (assumption-based, because TheLook has no marketing data) | Planned |
+| 4 | Best garment types inside the winning category (Outerwear & Coats) ([docs](docs/stage-04-star-products.md)) | 🚧 In progress |
+| 5 | Marketing and creative decisions for the top garment types (assumption-based, because TheLook has no marketing data) | Planned |
 | 6 | n8n automation and AI-assisted generation of campaign content (nothing is published) | Planned |
 | 7 | Portfolio finalization | Planned |
 
