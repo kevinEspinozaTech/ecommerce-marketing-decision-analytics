@@ -107,7 +107,12 @@ node_modules/
 # as evidence: T, row counts, SHA-256, reference KPIs.
 # Category ranking references are also committed: they are
 # per-category aggregates with no personal data.
+# Product ranking references and sensitivity files (Stage 4)
+# are committed for the same reason: per-product aggregates,
+# no personal data.
 # ==========================================================
 data/raw/*.csv
 !data/raw/category_ranking_reference_*.csv
+!data/raw/product_ranking_reference_*.csv
+!data/raw/product_ranking_sensitivity_*.csv
 Claude outputs/

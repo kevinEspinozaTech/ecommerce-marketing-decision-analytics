@@ -48,7 +48,8 @@ Kevin's decisions, 2026-10-15:
 - **[BUSINESS RULE / DECISION]** Each product's contribution to the category's gross profit is reported as a descriptive figure, not as a fifth criterion, because it ranks identically to gross profit.
 - **[BUSINESS RULE / DECISION]** Price tier is descriptive only; it is not a ranking criterion.
 - **[ANALYTICAL ASSUMPTION]** A product must have at least 3 items in the closed months to be ranked. Minimums of 2 and 4 items are tested as sensitivity checks.
-- **[BUSINESS RULE / DECISION]** The ranking is built first in Power BI with DAX; a Python script then produces an independent reference to validate it, as in Stage 3.
+- **[BUSINESS RULE / DECISION]** An independent Python reference is computed from the snapshot CSVs and used to validate the Power BI (DAX) ranking, as in Stage 3.
+- **[BUSINESS RULE / DECISION]** Tie-break rule (2026-10-15): when two products have the same scenario score, or the same average rank, the one with the higher gross profit ranks first; if still tied, the lower product id ranks first. Ranks are ordinal, so no rank is repeated.
 
 ## Concepts Learned
 
@@ -72,7 +73,9 @@ Kevin's decisions, 2026-10-15:
 
 ## Portfolio Evidence
 
-*(to be filled as the stage advances)*
+- `scripts/product_ranking_reference.py` — independent Python reference for the product ranking, computed from the snapshot CSVs (read-only).
+- `data/raw/product_ranking_reference_2026-10-07.csv` — eligible products ordered by final rank, with their metrics, scores and ranks.
+- `data/raw/product_ranking_sensitivity_2026-10-07.csv` — the top 5 at each minimum-volume setting used in the sensitivity check.
 
 ## Stage Validation
 
