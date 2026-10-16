@@ -110,9 +110,15 @@ node_modules/
 # Product ranking references and sensitivity files (Stage 4)
 # are committed for the same reason: per-product aggregates,
 # no personal data.
+# Garment-type review, type ranking references and type examples
+# (Stage 4) are committed for the same reason: per-product or
+# per-type aggregates, no personal data.
 # ==========================================================
 data/raw/*.csv
 !data/raw/category_ranking_reference_*.csv
 !data/raw/product_ranking_reference_*.csv
 !data/raw/product_ranking_sensitivity_*.csv
+!data/raw/product_type_review_*.csv
+!data/raw/type_ranking_reference_*.csv
+!data/raw/type_ranking_examples_*.csv
 Claude outputs/

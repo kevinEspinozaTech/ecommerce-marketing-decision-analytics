@@ -1,0 +1,26 @@
+product_type,example_order,product_id,product_name,brand,department,items,gross_profit,product_final_rank
+Jackets,1,24196,Mens Brown Sheepskin Flying Jacket 'Air force' Aviator Leather coat #S5,Unicorn London,Men,5,1192.95,1
+Jackets,2,24170,Barbour Bedale Wax Cotton Jacket Olive,Barbour,Men,5,1137.0,3
+Jackets,3,24283,The North Face Nuptse 2 Jacket - Noah Green/TNF Black,The North Face,Men,3,1598.31,4
+Jackets,4,8436,Calvin Klein Jeans Women's Liquid Metal Moto Jacket,Calvin Klein Jeans,Women,5,446.26,6
+Jackets,5,23791,Polo Ralph Lauren Men Lightweight Jacket,Ralph Lauren,Men,7,483.0,8
+Parkas & Down,1,24341,Nobis Yatesy Parka,Nobis,Men,3,1704.3,2
+Parkas & Down,2,24167,MontBell Alpine Light Down Parka - Men's,MontBell,Men,3,384.78,16
+Parkas & Down,3,8623,Silver Color Ladies Packable Nylon Down Hooded Jacket (carry pouch incl),FineBrandShop,Women,4,101.93,34
+Parkas & Down,4,8388,Tommy Hilfiger Women's Down Anorak with Hood,Tommy Hilfiger,Women,3,189.69,41
+Parkas & Down,5,23917,Mountain Hardwear Men's Ghost Whisperer Hooded Down Jacket,Mountain Hardwear,Men,3,516.6,48
+Vests,1,23839,G-Star Men's Whistler Hooded Vest,G-Star,Men,6,803.16,17
+Vests,2,23949,Carhartt Men's Big-Tall Sandstone Hooded Active Vest Quilt Lined,Carhartt,Men,3,118.74,33
+Vests,3,23833,ANSAI Men's Mobile Warming Softshell Vest,ANSAI,Men,4,385.8,47
+Vests,4,8779,Marmot Variant Vest - Women's,Marmot,Women,3,244.86,56
+Vests,5,24368,Walls Insulated Jackpot Roper Vest Black,Walls,Men,3,69.94,70
+Coats,1,23943,Dickies Men's Sanded Duck Premium Coat,Dickies,Men,6,362.45,5
+Coats,2,23784,Faconnable Men's Reversible Trench Coat,Faconnable,Men,3,995.32,12
+Coats,3,8548,United Face Womens Rex Fur Leather Swing Coat,United Face,Women,4,732.42,13
+Coats,4,24451,Perry Ellis Men's Melton Peacoat,Perry Ellis,Men,4,327.1,18
+Coats,5,23971,Dockers Men's Limited Offer Military Field Coat,Dockers,Men,4,181.46,20
+Fleece & Hoodies,1,24133,Cotton Traders Quarter Zip Pocketed Fleece,Cotton Traders,Men,6,59.84,10
+Fleece & Hoodies,2,24427,Columbia Men's Altitude Aspect Full Zip Fleece,Columbia,Men,3,165.87,62
+Fleece & Hoodies,3,8353,Columbia Sportswear's Women's Benton Springs Sweater,Columbia,Women,6,212.69,71
+Fleece & Hoodies,4,24435,Men's Kuhl Thor 1/4-Zip Fleece Pullover,Kuhl,Men,5,262.84,87
+Fleece & Hoodies,5,8814,Puma Sherpa Lined Zip Hoodie,PUMA,Women,3,148.89,127
