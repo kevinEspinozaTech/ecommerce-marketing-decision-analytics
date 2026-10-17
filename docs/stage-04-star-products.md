@@ -1,6 +1,6 @@
 # Stage 04 — Garment Types for Advertising
 
-**Stage 4 Status: IN PROGRESS** — the product-level reference ranking exists and serves as independent validation evidence (2026-10-15). The Python reference for the garment-type ranking is complete (2026-10-16). The Power BI implementation (classification in Power Query, DAX measures, dashboard page "5 · Garment types") is complete and validated against the Python reference (2026-10-16). The stage is pending final review and closure.
+**Stage 4 Status: COMPLETE (2026-10-17)** — the product-level reference ranking exists and serves as independent validation evidence (2026-10-15). The Python reference for the garment-type ranking is complete (2026-10-16). The Power BI implementation (classification in Power Query, DAX measures, dashboard page "5 · Garment types") is complete and validated against the Python reference (2026-10-16).
 
 ## Stage Objective
 
@@ -442,5 +442,6 @@ The Power BI garment-type ranking was validated against the Python reference by 
 - **Reframing (2026-10-16):** moved the Stage 4 ranking unit from products to garment types, because the product-level reference showed very small samples, a weak return-rate criterion and a top 5 that is fragile to the minimum-items threshold. Products are kept as ad examples; department is a descriptive label; marketing impact is out of scope. The Stage 4 output is the input for the Stage 5–6 ad generation.
 - **Garment-type classification and Python reference (2026-10-16):** drafted keyword rules on the product name, reordered them so the main garment noun wins over fleece/hoodie words (63 products moved), reviewed the result manually and froze the rules as v1. Built the independent Python reference for the garment-type ranking: Jackets first in all three scenarios, Parkas & Down second; control checks passed. Accepted Option A (five types, no sub-splitting of Jackets). The Power BI implementation is the next step.
 - **Power BI implementation (2026-10-16):** implemented `product_type` in Power Query, created the 16 garment-type DAX measures, validated Power BI against the Python reference (all matched), built the dashboard page "5 · Garment types" and wrote the Stage 4 output (Jackets, predominantly men's, five example products).
+- **Closure (2026-10-17):** Stage 4 approved and closed by the project owner.
 
-**Stage 4 Status: IN PROGRESS**
+**Stage 4 Status: COMPLETE**
