@@ -54,7 +54,133 @@
     ],
     "production_mode": [
       "a reference image of the real product is required",
-      "the product is never altered or invented: shape, color, details and logo stay as in the reference image"
+      "the product is never altered or invented: shape, color, details and logo stay as in the reference image",
+      "in production mode, lighting and color guidance applies to the scene around the product; the product itself is never retouched or altered"
     ]
+  },
+  "sources": {
+    "lewis_aida": {
+      "author": null,
+      "title": "E. St. Elmo Lewis",
+      "publisher": "Wikipedia",
+      "date": null,
+      "url": "https://en.wikipedia.org/wiki/E._St._Elmo_Lewis",
+      "evidence_type": "secondary history",
+      "caveat": "AIDA is attributed to Lewis (1898) mainly through Strong's 1925 book; Lewis never presented a fixed formula or used the acronym."
+    },
+    "adler_canon": {
+      "author": "Lindsay Adler",
+      "title": "Photography Essentials for Fashion Bloggers Part 1: Lighting and Exposure Fundamentals",
+      "publisher": "Canon U.S.A.",
+      "date": "2019-03-21",
+      "url": "https://www.usa.canon.com/learning/training-articles/training-articles-list/photography-essentials-for-fashion-bloggers-part-1-lighting-and-exposure-fundamentals",
+      "evidence_type": "practitioner advice",
+      "caveat": "Natural light only."
+    },
+    "house_fstoppers": {
+      "author": "Peter House",
+      "title": "How to Light Clothing Like a Product Photographer",
+      "publisher": "Fstoppers",
+      "date": "2014-04-14 (modified 2021-05-06)",
+      "url": "https://fstoppers.com/commercial/how-light-clothing-product-photographer-9524",
+      "evidence_type": "practitioner advice",
+      "caveat": "Does not cover ghost mannequin; flat lay appears only in comments."
+    },
+    "dutile_dps": {
+      "author": "Matt Dutile",
+      "title": "3 Ways to Improve Your Images With Composition",
+      "publisher": "Digital Photography School",
+      "date": "2013-08-15 (modified 2020-12-01)",
+      "url": "https://digital-photography-school.com/3-ways-to-improve-your-images-with-composition/",
+      "evidence_type": "practitioner advice",
+      "caveat": "No studies or data; the rule of thirds is not a hard rule."
+    },
+    "adobe_color_wheel": {
+      "author": null,
+      "title": "The color wheel explained and how colors work together",
+      "publisher": "Adobe Express",
+      "date": "2026-05-28",
+      "url": "https://www.adobe.com/ara/express/learn/blog/color-wheel-explained",
+      "evidence_type": "design education",
+      "caveat": "Its wording on triadic and split-complementary is inconsistent, so only complementary and analogous are used."
+    },
+    "squareshot_ecommerce": {
+      "author": null,
+      "title": "E-commerce photography tips to boost your online sales",
+      "publisher": "Squareshot",
+      "date": null,
+      "url": "https://www.squareshot.com/post/e-commerce-photography-tips-to-boost-your-online-sales",
+      "evidence_type": "commercial vendor blog",
+      "caveat": "No data behind its claims; weakest source, used only for catalog conventions."
+    },
+    "singh_2006": {
+      "author": "S. Singh",
+      "title": "Impact of color on marketing",
+      "publisher": "Management Decision 44(6)",
+      "date": "2006",
+      "url": "https://www.emeraldinsight.com/doi/abs/10.1108/00251740610673332",
+      "evidence_type": "literature review",
+      "caveat": "Reports inconsistencies and controversies in color psychology; used only to justify excluding color psychology."
+    }
+  },
+  "creative_approaches": {
+    "note": "Assumptions grounded in documented design practice (see sources); not tested for performance.",
+    "studio_hero": {
+      "aida_role": "attention",
+      "purpose": "show the garment as the single protagonist",
+      "lighting": "large diffused soft light, key light close to the camera axis, gentle fill, no hard overhead light",
+      "composition": "garment centered or on a third line, front or three-quarter view, minimal props",
+      "background": "plain neutral, evenly lit, no color cast",
+      "suitable_formats": ["square_post", "portrait_post", "landscape_post"],
+      "source_ids": ["house_fstoppers", "dutile_dps", "squareshot_ecommerce"]
+    },
+    "lifestyle_context": {
+      "aida_role": "desire",
+      "purpose": "show the garment worn in the seasonal scene so the viewer can imagine using it",
+      "lighting": "natural soft light; avoid harsh overhead sun; choose the light direction that flatters garment and model",
+      "composition": "model in the seasonal scene from the seasons section; rule of thirds as a guide; keep clean negative space for text in wide formats",
+      "background": "seasonal scene, uncluttered",
+      "suitable_formats": ["portrait_post", "story_vertical", "landscape_post", "cover_banner"],
+      "source_ids": ["adler_canon", "dutile_dps", "squareshot_ecommerce"]
+    },
+    "detail_closeup": {
+      "aida_role": "interest",
+      "purpose": "show fabric, stitching and construction details",
+      "lighting": "soft low-contrast diffused light that keeps fine detail",
+      "composition": "tight crop on texture, collar, closure or stitching; no model required",
+      "background": "plain neutral or softly blurred",
+      "suitable_formats": ["avatar", "square_post"],
+      "source_ids": ["house_fstoppers", "squareshot_ecommerce"]
+    },
+    "flat_lay": {
+      "aida_role": "interest",
+      "purpose": "show the whole garment shape from above",
+      "lighting": "large diffused light, same angles repositioned for a surface",
+      "composition": "top-down view, garment spread out, consistent spacing, minimal relevant props",
+      "background": "plain neutral surface",
+      "suitable_formats": ["square_post", "portrait_post"],
+      "source_ids": ["squareshot_ecommerce", "house_fstoppers"],
+      "note": "weaker support: commercial blog plus comments; manual selection only, never a default"
+    }
+  },
+  "default_approach_by_format": {
+    "note": "Assumption: default creative approach per format. flat_lay is never a default.",
+    "square_post": "studio_hero",
+    "portrait_post": "lifestyle_context",
+    "story_vertical": "lifestyle_context",
+    "landscape_post": "lifestyle_context",
+    "cover_banner": "lifestyle_context",
+    "avatar": "detail_closeup"
+  },
+  "color_harmony": {
+    "allowed": ["complementary", "analogous"],
+    "default": "analogous",
+    "guidance": "choose background and scene palette relative to the garment color: complementary for contrast, analogous for cohesion",
+    "note": "design harmony only; no psychological claims about colors",
+    "source_ids": ["adobe_color_wheel", "singh_2006"]
+  },
+  "aida_note": {
+    "note": "AIDA (attention, interest, desire, action) is used only to label each approach's role. The action stage is out of scope because price and calls to action are not part of the image. The mapping is a project assumption.",
+    "source_ids": ["lewis_aida"]
   }
 }

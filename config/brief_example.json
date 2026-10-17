@@ -20,6 +20,8 @@
     "lighting": "low golden-hour sunlight, warm color temperature",
     "model": "adult male model"
   },
+  "creative_approach": "studio_hero",
+  "color_harmony": "analogous",
   "format": {
     "name": "square_post",
     "aspect_ratio": "1:1",
@@ -30,8 +32,10 @@
     "no real identifiable people",
     "no price or discount claims",
     "no performance claims",
+    "human review is required before any output is considered valid",
     "no brand names or logos in generated text or imagery",
-    "label the output as illustrative: not a TheLook product"
+    "label the output as illustrative: not a TheLook product",
+    "the reference image must be one the project owner has the right to use; its license is verified in Stage 6"
   ],
   "human_review_required": true
 }

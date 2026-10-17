@@ -15,11 +15,11 @@ This project builds an end-to-end decision-support system for a **fictional** e-
 | 2 | Data preparation and analytical validation in SQL / BigQuery ([docs](docs/stage-02-data-preparation.md), [SQL](sql/)) | ✅ Completed |
 | 3 | Data model, DAX measures and Power BI dashboard ([docs](docs/stage-03-data-model.md)) | ✅ Completed |
 | 4 | Best garment types inside the winning category (Outerwear & Coats) ([docs](docs/stage-04-star-products.md)) | ✅ Completed |
-| 5 | Marketing and creative decisions for the top garment types (assumption-based, because TheLook has no marketing data) | Planned |
+| 5 | Creative brief for the ad automation (specification only, assumption-based) ([docs](docs/stage-05-creative-brief.md)) | ✅ Completed |
 | 6 | n8n automation and AI-assisted generation of campaign content (nothing is published) | Planned |
 | 7 | Portfolio finalization | Planned |
 
-Stages 4 to 7 are planned and may be refined as each stage begins. The project ends with automatically generated campaign content: it does not publish to any platform or measure performance, and a publication and feedback loop is described only as possible future work.
+Stages 6 and 7 are planned and may be refined as each stage begins. The project ends with automatically generated campaign content: it does not publish to any platform or measure performance, and a publication and feedback loop is described only as possible future work.
 
 ![Power BI dashboard, Executive summary page: recommended category and its key figures](powerbi/02-executive-summary.png)
 
@@ -54,7 +54,9 @@ Other dashboard pages:
 │   ├── stage-01-business-case.md
 │   ├── stage-02-data-preparation.md
 │   ├── stage-03-data-model.md
-│   └── stage-04-star-products.md
+│   ├── stage-04-star-products.md
+│   └── stage-05-creative-brief.md
+├── config/                  # Configuration files for the ad automation (added in Stage 5)
 ├── sql/                     # SQL scripts (added in Stage 2 — see below)
 ├── data/
 │   └── raw/                 # Frozen dataset snapshots (added in Stage 3 — see below)
@@ -76,7 +78,14 @@ This is where exported n8n workflow JSON files live, organized by maturity:
 
 ### `docs/`
 
-Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, `stage-03-data-model.md`, and `stage-04-star-products.md` (complete).
+Reference notes, setup guides, architecture explanations, and any written documentation that supports the workflows in this repository. This includes one documentation/log file per stage (see "Development Approach" below): `stage-01-business-case.md`, `stage-02-data-preparation.md`, `stage-03-data-model.md`, `stage-04-star-products.md` (complete), and `stage-05-creative-brief.md` (complete).
+
+### `config/`
+
+Added in Stage 5. Configuration files for the ad automation: creative rules and an example brief.
+
+- `creative_rules.json` — seasons, department model, formats and restrictions.
+- `brief_example.json` — one example brief in demo mode.
 
 ### `sql/`
 
@@ -114,7 +123,7 @@ Reusable workflow skeletons, starter nodes, and boilerplate patterns that can be
 
 ## Planned Architecture (Future Stages)
 
-The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2 and 3 have added so far (`sql/`, `data/raw/`, `scripts/`, `powerbi/` (dashboard screenshots, added in Stage 3), and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` / `docs/stage-04-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
+The structure above (Folder Structure) reflects the **current state of the repository**, including what Stages 2, 3, 4 and 5 have added so far (`sql/`, `data/raw/`, `scripts/`, `powerbi/` (dashboard screenshots, added in Stage 3), `config/` (added in Stage 5), and the `docs/stage-01-*.md` / `docs/stage-02-*.md` / `docs/stage-03-*.md` / `docs/stage-04-*.md` / `docs/stage-05-*.md` files). As the project grows beyond n8n into a broader data/BI/automation/AI portfolio, the following will still be added — **one folder at a time, only when the stage that needs it begins**, not in advance:
 
 ```
 data/
@@ -149,7 +158,7 @@ Starting with Stage 1, each stage gets a single file at `docs/stage-XX-short-nam
 - Stage Validation
 - Stage Log
 
-Sections are filled in progressively as each stage advances rather than all at once. Four such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), `docs/stage-03-data-model.md` (Stage 3, complete), and `docs/stage-04-star-products.md` (Stage 4, complete).
+Sections are filled in progressively as each stage advances rather than all at once. Five such files exist so far: `docs/stage-01-business-case.md` (Stage 1, complete), `docs/stage-02-data-preparation.md` (Stage 2, complete), `docs/stage-03-data-model.md` (Stage 3, complete), `docs/stage-04-star-products.md` (Stage 4, complete), and `docs/stage-05-creative-brief.md` (Stage 5, complete).
 
 ## ⚠️ Security: Credentials and Secrets
 
@@ -165,4 +174,4 @@ If a secret is ever accidentally committed, treat it as compromised: revoke/rota
 
 ## Status
 
-✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. ✅ Stage 3 (Data Model & Power BI) is complete (closed 2026-10-15) — the frozen snapshot of TheLook (2026-10-07) was exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard were built and validated — see `docs/stage-03-data-model.md`. ✅ Stage 4 (garment types inside the winning category) is complete (closed 2026-10-17) — see `docs/stage-04-star-products.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
+✅ Stage 0 (Environment Setup) is complete. ✅ Stage 1 (Business Case & Data Acquisition) is complete — the primary dataset (TheLook eCommerce) was selected through a documented evaluation and gap analysis. ✅ Stage 2 (Data Preparation & Analytical Validation) is complete (closed 2026-09-21) — see `docs/stage-02-data-preparation.md` for the full validation, Category Decision Model, and SQL consolidation record. ✅ Stage 3 (Data Model & Power BI) is complete (closed 2026-10-15) — the frozen snapshot of TheLook (2026-10-07) was exported and verified (`data/raw/manifest_2026-10-07.json`), and the Power BI model, DAX measures, category decision model and four-page dashboard were built and validated — see `docs/stage-03-data-model.md`. ✅ Stage 4 (garment types inside the winning category) is complete (closed 2026-10-17) — see `docs/stage-04-star-products.md`. ✅ Stage 5 (Creative Brief) is complete (closed 2026-10-17) — see `docs/stage-05-creative-brief.md`. Expect the structure and contents to evolve incrementally, one stage at a time, as skills and projects mature.
