@@ -1,0 +1,60 @@
+{
+  "version": "v1-draft",
+  "stage": 5,
+  "note": "Every creative value in this file is an analytical assumption defined by the project, not a claim that it performs better. Values are generic and contain no brand names.",
+  "seasons": {
+    "note": "Assumption: generic seasonal directions chosen by the project; not tested for performance.",
+    "spring": {
+      "mood": "fresh, light, optimistic",
+      "scene": "city park or tree-lined street with early greenery",
+      "lighting": "soft natural daylight, slightly diffused"
+    },
+    "summer": {
+      "mood": "relaxed, open, energetic",
+      "scene": "coastal promenade or open rooftop at the end of the day",
+      "lighting": "warm evening sunlight, long soft shadows"
+    },
+    "autumn": {
+      "mood": "warm, calm, grounded",
+      "scene": "street or park with fallen leaves in warm tones",
+      "lighting": "low golden-hour sunlight, warm color temperature"
+    },
+    "winter": {
+      "mood": "crisp, cozy, quiet",
+      "scene": "cold urban street or snowy outdoor setting",
+      "lighting": "cool overcast daylight with soft contrast"
+    }
+  },
+  "department_model": {
+    "note": "Business rule: the department is a descriptive label from the data; scene and styling stay identical across departments and only the model differs. Avoid stereotypes in pose, setting, styling and wording. Assumption: the model wording below.",
+    "Men": "adult male model",
+    "Women": "adult female model"
+  },
+  "formats": {
+    "note": "Project-defined working sizes, not official platform specifications. Assumption: chosen as common working sizes for the Stage 6 automation.",
+    "square_post": { "aspect_ratio": "1:1", "width": 1080, "height": 1080 },
+    "portrait_post": { "aspect_ratio": "4:5", "width": 1080, "height": 1350 },
+    "story_vertical": { "aspect_ratio": "9:16", "width": 1080, "height": 1920 },
+    "landscape_post": { "aspect_ratio": "16:9", "width": 1920, "height": 1080 },
+    "cover_banner": { "aspect_ratio": "3:1", "width": 1500, "height": 500 },
+    "avatar": { "aspect_ratio": "1:1", "width": 400, "height": 400, "framing": "product close-up" }
+  },
+  "restrictions": {
+    "note": "Business rules / decisions defined by the project for every generated output.",
+    "all_modes": [
+      "no real identifiable people",
+      "no price or discount claims",
+      "no performance claims",
+      "human review is required before any output is considered valid"
+    ],
+    "demo_mode": [
+      "no brand names or logos in generated text or imagery",
+      "label the output as illustrative: not a TheLook product",
+      "the reference image must be one the project owner has the right to use; its license is verified in Stage 6"
+    ],
+    "production_mode": [
+      "a reference image of the real product is required",
+      "the product is never altered or invented: shape, color, details and logo stay as in the reference image"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "note": "Example brief in demo mode. Creative values come from config/creative_rules.json and are assumptions, not performance claims.",
+  "mode": "demo",
+  "garment_type": "Jackets",
+  "department": "Men",
+  "product_reference_internal": {
+    "note": "Internal use only; never in ad text. First Men Jackets row of data/raw/type_ranking_examples_2026-10-07.csv.",
+    "product_id": 24196,
+    "product_name": "Mens Brown Sheepskin Flying Jacket 'Air force' Aviator Leather coat #S5"
+  },
+  "reference_image": null,
+  "reference_image_note": "Selected in Stage 6: an image the project owner has the right to use, with its license verified.",
+  "garment_color": null,
+  "garment_color_note": "Taken from the reference image once selected; manual input only if no usable image is available.",
+  "season": "autumn",
+  "style_direction": {
+    "source": "config/creative_rules.json -> seasons.autumn and department_model.Men",
+    "mood": "warm, calm, grounded",
+    "scene": "street or park with fallen leaves in warm tones",
+    "lighting": "low golden-hour sunlight, warm color temperature",
+    "model": "adult male model"
+  },
+  "format": {
+    "name": "square_post",
+    "aspect_ratio": "1:1",
+    "width": 1080,
+    "height": 1080
+  },
+  "restrictions": [
+    "no real identifiable people",
+    "no price or discount claims",
+    "no performance claims",
+    "no brand names or logos in generated text or imagery",
+    "label the output as illustrative: not a TheLook product"
+  ],
+  "human_review_required": true
+}
