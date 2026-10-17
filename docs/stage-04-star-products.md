@@ -1,6 +1,6 @@
 # Stage 04 — Garment Types for Advertising
 
-**Stage 4 Status: IN PROGRESS** — the product-level reference ranking exists and serves as independent validation evidence (2026-10-15). The Python reference for the garment-type ranking is complete (2026-10-16). The next step is the Power BI implementation of the garment-type ranking.
+**Stage 4 Status: IN PROGRESS** — the product-level reference ranking exists and serves as independent validation evidence (2026-10-15). The Python reference for the garment-type ranking is complete (2026-10-16). The Power BI implementation (classification in Power Query, DAX measures, dashboard page "5 · Garment types") is complete and validated against the Python reference (2026-10-16). The stage is pending final review and closure.
 
 ## Stage Objective
 
@@ -121,9 +121,224 @@ Control checks passed: 2,159 items, 174,730.35 gross profit and 1,111 products w
 - **[ANALYTICAL ASSUMPTION]** Interpretation: Jackets win largely because they are the most numerous type, since two of the four criteria (gross profit and sales volume) are totals; and Min-Max scaling stretches the tiny margin differences over the full 0–100 range.
 - **[DATASET LIMITATION]** Classification is by name: a down-filled jacket whose name does not include a word such as "down" is classified as Jackets. "Other" holds 75 products (57 with sales) that have no garment word or are not outerwear (e.g., scrub tops, pants).
 
+## Power BI Implementation
+
+### Power Query: `product_type` in `dim_product`
+
+The Power BI file itself is kept outside the repository. Two custom columns were added to `dim_product` after the existing steps: a helper column `name_clean`, then `product_type`. The rules are the same ordered rules as `scripts/product_type_classification.py` (see "Garment-Type Classification (v1)").
+
+`name_clean`:
+
+```m
+let
+    lower = Text.Lower([Product_name] ?? ""),
+    allowed = "abcdefghijklmnopqrstuvwxyz0123456789",
+    chars = List.Transform(Text.ToList(lower), each if Text.Contains(allowed, _) then _ else " "),
+    words = List.Select(Text.Split(Text.Combine(chars), " "), each _ <> "")
+in
+    " " & Text.Combine(words, " ") & " "
+```
+
+`product_type`:
+
+```m
+let
+    p = Text.Replace(Text.Replace(Text.Replace([name_clean], " button down ", " "), " turn down ", " "), " fleece lined ", " "),
+    has = (kw as list) as logical => List.AnyTrue(List.Transform(kw, each Text.Contains(p, " " & _ & " ")))
+in
+    if [category] <> "Outerwear & Coats" then "Not in scope"
+    else if has({"vest","gilet","waistcoat","windvest"}) then "Vests"
+    else if has({"parka","down","puffer","puffy"}) then "Parkas & Down"
+    else if has({"trench","trenchcoat","peacoat","pea coat","overcoat","topcoat","raincoat","carcoat","car coat","duster"}) then "Coats"
+    else if has({"jacket","jac","bomber","windbreaker","anorak","blazer","softshell","soft shell","shell","windshirt","blouson"}) then "Jackets"
+    else if has({"coat"}) then "Coats"
+    else if has({"fleece","hoodie","hoody","sweatshirt","sweater"}) then "Fleece & Hoodies"
+    else "Other"
+```
+
+- `product_type` was set to data type Text.
+- The helper column `name_clean` was removed after the check.
+- A temporary filter on `category`, used for the check, was removed.
+- Products outside Outerwear & Coats get "Not in scope".
+
+### DAX measures by garment type
+
+The measures live in the `fact_order_items` table, like the Stage 3 measures.
+
+```dax
+Type Is Ranked =
+VAR T = SELECTEDVALUE ( dim_product[product_type] )
+RETURN
+    IF ( NOT ISBLANK ( T ) && NOT ( T IN { "Other", "Not in scope" } ), 1 )
+```
+
+```dax
+Type Score Gross Profit =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+VAR Cur  = [Gross Profit (Closed Months)]
+VAR MinV = MINX ( Types, [Gross Profit (Closed Months)] )
+VAR MaxV = MAXX ( Types, [Gross Profit (Closed Months)] )
+RETURN
+    IF ( [Type Is Ranked] = 1, DIVIDE ( Cur - MinV, MaxV - MinV ) * 100 )
+```
+
+```dax
+Type Score Gross Margin =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+VAR Cur  = [Gross Margin % (Closed Months)]
+VAR MinV = MINX ( Types, [Gross Margin % (Closed Months)] )
+VAR MaxV = MAXX ( Types, [Gross Margin % (Closed Months)] )
+RETURN
+    IF ( [Type Is Ranked] = 1, DIVIDE ( Cur - MinV, MaxV - MinV ) * 100 )
+```
+
+```dax
+Type Score Sales Volume =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+VAR Cur  = [Complete Items (Closed Months)]
+VAR MinV = MINX ( Types, [Complete Items (Closed Months)] )
+VAR MaxV = MAXX ( Types, [Complete Items (Closed Months)] )
+RETURN
+    IF ( [Type Is Ranked] = 1, DIVIDE ( Cur - MinV, MaxV - MinV ) * 100 )
+```
+
+```dax
+Type Score Return Rate =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+VAR Cur  = [Return Rate %]
+VAR MinV = MINX ( Types, [Return Rate %] )
+VAR MaxV = MAXX ( Types, [Return Rate %] )
+RETURN
+    IF ( [Type Is Ranked] = 1, DIVIDE ( MaxV - Cur, MaxV - MinV ) * 100 )
+```
+
+```dax
+Type Score Balanced =
+0.25 * [Type Score Gross Profit] + 0.25 * [Type Score Gross Margin]
++ 0.25 * [Type Score Sales Volume] + 0.25 * [Type Score Return Rate]
+```
+
+```dax
+Type Score Profitability =
+0.30 * [Type Score Gross Profit] + 0.30 * [Type Score Gross Margin]
++ 0.20 * [Type Score Sales Volume] + 0.20 * [Type Score Return Rate]
+```
+
+```dax
+Type Score Growth Controlled Risk =
+0.20 * [Type Score Gross Profit] + 0.30 * [Type Score Gross Margin]
++ 0.20 * [Type Score Sales Volume] + 0.30 * [Type Score Return Rate]
+```
+
+```dax
+Type Rank Balanced =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+RETURN
+    IF ( [Type Is Ranked] = 1, RANKX ( Types, [Type Score Balanced], , DESC, Skip ) )
+```
+
+```dax
+Type Rank Profitability =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+RETURN
+    IF ( [Type Is Ranked] = 1, RANKX ( Types, [Type Score Profitability], , DESC, Skip ) )
+```
+
+```dax
+Type Rank Growth Controlled Risk =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+RETURN
+    IF ( [Type Is Ranked] = 1, RANKX ( Types, [Type Score Growth Controlled Risk], , DESC, Skip ) )
+```
+
+```dax
+Type Average Rank =
+DIVIDE ( [Type Rank Balanced] + [Type Rank Profitability] + [Type Rank Growth Controlled Risk], 3 )
+```
+
+```dax
+Type Rank Variation =
+VAR R1 = [Type Rank Balanced]
+VAR R2 = [Type Rank Profitability]
+VAR R3 = [Type Rank Growth Controlled Risk]
+RETURN
+    MAX ( MAX ( R1, R2 ), R3 ) - MIN ( MIN ( R1, R2 ), R3 )
+```
+
+```dax
+Top Type =
+VAR Types =
+    FILTER ( ALL ( dim_product[product_type] ), NOT ( dim_product[product_type] IN { "Other", "Not in scope" } ) )
+VAR TopTable =
+    TOPN ( 1, Types, [Type Average Rank], ASC, [Gross Profit (Closed Months)], DESC )
+RETURN
+    MAXX ( TopTable, dim_product[product_type] )
+```
+
+```dax
+Type Bar Color =
+IF ( SELECTEDVALUE ( dim_product[product_type] ) = [Top Type], "#9A7B4F", "#94A3B8" )
+```
+
+Notes:
+
+- The measures reuse the Stage 3 base measures: `Gross Profit (Closed Months)`, `Gross Margin % (Closed Months)`, `Complete Items (Closed Months)` and `Return Rate %`.
+- The Min-Max range is taken only over the five ranked types.
+- `Robustness Class` was not replicated: with five types, the condition "Average Rank ≤ 10" would always be true.
+- `RANKX` uses `Skip` (no tie-break), while the Python reference uses an ordinal tie-break. No tie occurred.
+
+### Dashboard page "5 · Garment types"
+
+The page was created by duplicating page 4, so the layout matches the Stage 3 pages. It contains:
+
+- a `Top Type` card;
+- a table with garment type, average rank, rank variation, items, gross profit, margin and return rate, sorted by average rank;
+- a bar chart of the Balanced score, with the winner highlighted through `Type Bar Color`;
+- a 100% stacked bar of items by department;
+- a note about "Other".
+
+A page-level filter keeps only the five ranked types.
+
+## Stage 4 Output (input for Stages 5 and 6)
+
+- **Winning garment type:** Jackets, first in all three scenarios.
+- **Department label:** predominantly men's (69.22% of items sold are men's, 30.78% women's).
+- **Example products** (from `data/raw/type_ranking_examples_2026-10-07.csv`):
+
+| Product id | Name | Brand | Department | Items | Gross profit | Product final rank |
+|---|---|---|---|---|---|---|
+| 24196 | Mens Brown Sheepskin Flying Jacket 'Air force' Aviator Leather coat #S5 | Unicorn London | Men | 5 | 1,192.95 | 1 |
+| 24170 | Barbour Bedale Wax Cotton Jacket Olive | Barbour | Men | 5 | 1,137.00 | 3 |
+| 24283 | The North Face Nuptse 2 Jacket - Noah Green/TNF Black | The North Face | Men | 3 | 1,598.31 | 4 |
+| 8436 | Calvin Klein Jeans Women's Liquid Metal Moto Jacket | Calvin Klein Jeans | Women | 5 | 446.26 | 6 |
+| 23791 | Polo Ralph Lauren Men Lightweight Jacket | Ralph Lauren | Men | 7 | 483.00 | 8 |
+
+The example products for the other four ranked types are in the same CSV.
+
 ## Work Completed
 
-*(to be filled as the stage advances)*
+2026-10-15:
+
+- Defined the Stage 4 method.
+- Built the independent product-level Python reference and its sensitivity check.
+
+2026-10-16:
+
+- Reframed the stage to garment types.
+- Drafted, reviewed and froze the keyword classification rules v1.
+- Built the garment-type Python reference with example products.
+- Implemented `product_type` in Power Query.
+- Created the 16 garment-type DAX measures.
+- Validated Power BI against the Python reference.
+- Built the dashboard page "5 · Garment types".
+- Wrote the Stage 4 output: Jackets, predominantly men's, with five example products.
 
 ## Decisions Made
 
@@ -152,23 +367,42 @@ Kevin's decisions, 2026-10-16 (reframing). The 2026-10-15 decisions on the minim
 
 ## Concepts Learned
 
-*(to be filled as the stage advances)*
+- **Ordered keyword rules as a custom column in M:** `Text.Lower`, `Text.Replace`, `List.AnyTrue` and a local function.
+- **Explicit data types:** a column of type Any blocks the column distribution view.
+- **DAX:** `FILTER` over `ALL`, the `MINX`/`MAXX` iterators and context transition.
+- **`RANKX`** for ranking garment types.
+- **Guard-measure pattern:** `Type Is Ranked` returns blank for types that must not be scored or ranked.
+- **Conditional formatting by field value** (`Type Bar Color`).
 
 ## Problems Encountered
 
-*(to be filled as the stage advances)*
+1. The first keyword draft read "Button Down" as down filling.
+2. Jackets with a fleece hood or hoodie words in the name were classified as sweatshirts.
+3. The first Power Query custom column returned 100% errors.
+4. The Value distribution view did not compute for the new column.
+5. Risk of altering the closed Stage 3 work.
 
 ## Solutions
 
-*(to be filled as the stage advances)*
+1. Exclusion phrases (`button down`, `turn down`, `fleece lined`) are removed before matching.
+2. The rules were reordered so the main garment noun wins; 63 products moved, and the rules were frozen as v1.
+3. The product name column is named `Product_name` (capital P); the field name was corrected.
+4. The column had data type Any; it was set to Text.
+5. The Power BI file was saved under a new name before editing, and page 5 was created by duplicating page 4, so the Stage 3 pages stay unchanged.
 
 ## PL-300 Connection
 
-*(to be filled as the stage advances)*
+- These steps are practice for transforming data and creating DAX calculations; the custom M column goes a bit beyond the exam's conditional column.
 
 ## Skills Demonstrated
 
-*(to be filled as the stage advances)*
+- Independent validation of a Power BI model with a Python (pandas) reference.
+- Power Query M custom columns and data types.
+- DAX iterators, `RANKX` and guard measures.
+- Rule-based classification with documented, reviewable rules.
+- Data storytelling in a dashboard page.
+- Evidence-based documentation with explicit assumptions and limitations.
+- Git workflow with stage-numbered commits.
 
 ## Portfolio Evidence
 
@@ -186,14 +420,27 @@ Garment-type classification and ranking evidence (commit `0758f1c`):
 - `data/raw/type_ranking_reference_2026-10-07.csv` — garment types ordered by final rank, with metrics, descriptive figures, scores and ranks (Other included, not ranked).
 - `data/raw/type_ranking_examples_2026-10-07.csv` — the top 5 example products per ranked garment type.
 
+Power BI evidence:
+
+- `powerbi/05-garment-types.png` — screenshot of the dashboard page "5 · Garment types" (2255×1293, the same size as the other four pages in `powerbi/`).
+- The Power BI file itself is kept outside the repository.
+
 ## Stage Validation
 
-*(to be filled as the stage advances)*
+The Power BI garment-type ranking was validated against the Python reference by comparing the Power BI table with `data/raw/type_ranking_reference_2026-10-07.csv`.
+
+- **[OBSERVED FACT]** Product counts per type in Power Query match: Vests 98, Parkas & Down 147, Coats 295, Jackets 752, Fleece & Hoodies 53, Other 75 (total 1,420). `dim_product` has 29,120 products.
+- **[OBSERVED FACT]** Items, gross profit, margin and return rate match for the six types.
+- **[OBSERVED FACT]** The three scenario scores, the three ranks, average rank and rank variation match for the five ranked types.
+- **[OBSERVED FACT]** `Top Type` = Jackets.
+- **[OBSERVED FACT]** Across the six types, items (2,159) and gross profit (174,730.35) equal the category totals. "Not in scope" holds the other categories (40,762 items).
+- The comparison was done by eye, with the scores shown at two decimals in Power BI and four in the CSV.
 
 ## Stage Log
 
 - **Method definition (2026-10-15):** defined the Stage 4 method — four criteria per product, the Stage 3 weighting scenarios and robustness measures, contribution and price tier as descriptive figures, a minimum of 3 items with 2 and 4 as sensitivity checks, and a Power BI ranking validated by an independent Python reference. Recomputed the product-level sample sizes for Outerwear & Coats from the snapshot CSVs.
 - **Reframing (2026-10-16):** moved the Stage 4 ranking unit from products to garment types, because the product-level reference showed very small samples, a weak return-rate criterion and a top 5 that is fragile to the minimum-items threshold. Products are kept as ad examples; department is a descriptive label; marketing impact is out of scope. The Stage 4 output is the input for the Stage 5–6 ad generation.
 - **Garment-type classification and Python reference (2026-10-16):** drafted keyword rules on the product name, reordered them so the main garment noun wins over fleece/hoodie words (63 products moved), reviewed the result manually and froze the rules as v1. Built the independent Python reference for the garment-type ranking: Jackets first in all three scenarios, Parkas & Down second; control checks passed. Accepted Option A (five types, no sub-splitting of Jackets). The Power BI implementation is the next step.
+- **Power BI implementation (2026-10-16):** implemented `product_type` in Power Query, created the 16 garment-type DAX measures, validated Power BI against the Python reference (all matched), built the dashboard page "5 · Garment types" and wrote the Stage 4 output (Jackets, predominantly men's, five example products).
 
 **Stage 4 Status: IN PROGRESS**
