@@ -1,0 +1,588 @@
+{
+  "name": "Stage 6 - Ad image v1 (demo)",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        -720
+      ],
+      "id": "685bb821-37f1-4728-9dcb-b8c5d66ce96c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"note\": \"Example brief in demo mode. Creative values come from config/creative_rules.json and are assumptions, not performance claims.\",\n  \"mode\": \"demo\",\n  \"garment_type\": \"Jackets\",\n  \"department\": \"Men\",\n  \"product_reference_internal\": {\n    \"note\": \"Internal use only; never in ad text. First Men Jackets row of data/raw/type_ranking_examples_2026-10-07.csv.\",\n    \"product_id\": 24196,\n    \"product_name\": \"Mens Brown Sheepskin Flying Jacket 'Air force' Aviator Leather coat #S5\"\n  },\n  \"reference_image\": null,\n  \"reference_image_note\": \"Selected in Stage 6: an image the project owner has the right to use, with its license verified.\",\n  \"garment_color\": null,\n  \"garment_color_note\": \"Taken from the reference image once selected; manual input only if no usable image is available.\",\n  \"season\": \"autumn\",\n  \"style_direction\": {\n    \"source\": \"config/creative_rules.json -> seasons.autumn and department_model.Men\",\n    \"mood\": \"warm, calm, grounded\",\n    \"scene\": \"street or park with fallen leaves in warm tones\",\n    \"lighting\": \"low golden-hour sunlight, warm color temperature\",\n    \"model\": \"adult male model\"\n  },\n  \"creative_approach\": \"studio_hero\",\n  \"color_harmony\": \"analogous\",\n  \"format\": {\n    \"name\": \"square_post\",\n    \"aspect_ratio\": \"1:1\",\n    \"width\": 1080,\n    \"height\": 1080\n  },\n  \"restrictions\": [\n    \"no real identifiable people\",\n    \"no price or discount claims\",\n    \"no performance claims\",\n    \"human review is required before any output is considered valid\",\n    \"no brand names or logos in generated text or imagery\",\n    \"label the output as illustrative: not a TheLook product\",\n    \"the reference image must be one the project owner has the right to use; its license is verified in Stage 6\"\n  ],\n  \"human_review_required\": true\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -1792,
+        -720
+      ],
+      "id": "fe3a508a-8661-40b8-af4f-1f322f07ff1d",
+      "name": "Brief"
+    },
+    {
+      "parameters": {
+        "jsCode": "const brief = $input.first().json;\nconst errors = [];\n\n// 1. Mode must be a known value\nif (!['demo', 'production'].includes(brief.mode)) {\n  errors.push('mode must be \"demo\" or \"production\"');\n}\n\n// 2. Required fields must exist and not be empty\nconst required = ['garment_type', 'department', 'season', 'style_direction', 'format', 'restrictions'];\nfor (const field of required) {\n  const v = brief[field];\n  if (v === undefined || v === null || v === '') {\n    errors.push('missing required field: ' + field);\n  }\n}\n\n// 3. Department\nif (!['Men', 'Women'].includes(brief.department)) {\n  errors.push('department must be \"Men\" or \"Women\"');\n}\n\n// 4. Format needs a name and positive numeric size\nconst f = brief.format || {};\nif (!f.name || !(f.width > 0) || !(f.height > 0)) {\n  errors.push('format needs a name and a positive width and height');\n}\n\n// 5. Human review is always required\nif (brief.human_review_required !== true) {\n  errors.push('human_review_required must be true');\n}\n\n// 6. Restrictions\nconst restrictions = Array.isArray(brief.restrictions) ? brief.restrictions : [];\nif (restrictions.length === 0) {\n  errors.push('restrictions must be a non-empty list');\n}\nif (brief.mode === 'demo' && !restrictions.some(r => String(r).toLowerCase().includes('illustrative'))) {\n  errors.push('demo mode requires the \"illustrative\" label restriction');\n}\n\nreturn [{ json: { ...brief, validation: { valid: errors.length === 0, errors: errors } } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1568,
+        -720
+      ],
+      "id": "bb3425b6-a820-4ac8-ba8f-609c4d1b394b",
+      "name": "Validate brief"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "16ef3fbf-920f-4cbc-92ce-91e95eb20ae6",
+              "leftValue": "={{ $json.validation.valid }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1392,
+        -736
+      ],
+      "id": "99b5f355-9570-4345-a8ac-7aade674315c",
+      "name": "Brief valid?"
+    },
+    {
+      "parameters": {
+        "errorMessage": "=Brief validation failed: {{ $json.validation.errors.join('; ') }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        -640
+      ],
+      "id": "27bb2dff-fde2-4eee-b348-336884e2d8e9",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "fileSelector": "<REPO_DIR>\\config\\creative_rules.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1120,
+        -816
+      ],
+      "id": "ba81b943-6b2c-4921-b132-45feaef96e95",
+      "name": "Read creative rules"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "rules",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -896,
+        -816
+      ],
+      "id": "df1f9f96-0c72-4165-9430-9b0f31f35a36",
+      "name": "Parse creative rules"
+    },
+    {
+      "parameters": {
+        "jsCode": "const brief = $('Validate brief').first().json;\nconst rules = $input.first().json.rules;\n\n// --- Look up what the brief points to; fail early if the rules don't define it\nconst season = rules.seasons[brief.season];\nif (!season) throw new Error('Unknown season: ' + brief.season);\n\nconst model = rules.department_model[brief.department];\nif (!model) throw new Error('Unknown department: ' + brief.department);\n\nconst format = rules.formats[brief.format.name];\nif (!format) throw new Error('Unknown format: ' + brief.format.name);\n\nconst approachKey = brief.creative_approach || rules.default_approach_by_format[brief.format.name];\nconst approach = rules.creative_approaches[approachKey];\nif (!approach) throw new Error('Unknown creative approach: ' + approachKey);\n\nconst harmony = brief.color_harmony || rules.color_harmony.default;\nif (!rules.color_harmony.allowed.includes(harmony)) throw new Error('Unknown color harmony: ' + harmony);\n\nconst modeRestrictions = rules.restrictions[brief.mode + '_mode'];\nif (!modeRestrictions) throw new Error('No restrictions defined for mode: ' + brief.mode);\n\n// --- Warnings (do not stop the workflow)\nconst warnings = [];\nif (!approach.suitable_formats.includes(brief.format.name)) {\n  warnings.push(approachKey + ' is not listed as suitable for format ' + brief.format.name);\n}\n\n// --- Restrictions: visual ones go into the prompt, process ones stay as metadata\nconst allRestrictions = [...rules.restrictions.all_modes, ...modeRestrictions];\nconst processOnly = /human review|label the output|license|is required/i;\nconst promptRestrictions = allRestrictions.filter(r => !processOnly.test(r));\nconst labelRestriction = allRestrictions.find(r => /label the output/i.test(r)) || null;\n\n// --- Which approaches use a model, and which use the seasonal scene\nconst usesModel = !['detail_closeup', 'flat_lay'].includes(approachKey);\nconst isLifestyle = approachKey === 'lifestyle_context';\nconst scene = isLifestyle ? season.scene : approach.background;\nconst lighting = isLifestyle ? season.lighting + '; ' + approach.lighting : approach.lighting;\n\n// --- Build the prompt text\nconst lines = [\n  'Create a ' + format.aspect_ratio + ' advertising image of the garment shown in the attached reference image (garment type: ' + brief.garment_type + ').',\n  'Product: reproduce the garment exactly as it appears in the reference image (shape, color, details). Do not alter, redesign or invent the product.',\n  'Approach (' + approachKey + '): ' + approach.purpose + '.',\n  'Composition: ' + approach.composition + '.',\n  (isLifestyle ? 'Scene: ' : 'Background: ') + scene + '.',\n  'Lighting: ' + lighting + '.',\n  'Mood: ' + season.mood + '.'\n];\nif (format.framing) lines.push('Framing: ' + format.framing + '.');\nif (usesModel) lines.push('Model: ' + model + ' wearing the garment.');\nlines.push('Color: use ' + harmony + ' harmony (' + (harmony === 'complementary' ? 'contrast' : 'cohesion') + ') between the garment color in the reference image and the background palette.');\nlines.push('Constraints: ' + promptRestrictions.join('; ') + '.');\n\nreturn [{\n  json: {\n    brief: brief,\n    prompt: lines.join('\\n'),\n    approach: approachKey,\n    color_harmony: harmony,\n    format: { name: brief.format.name, aspect_ratio: format.aspect_ratio, width: format.width, height: format.height },\n    rules_version: rules.version,\n    label_restriction: labelRestriction,\n    restrictions_in_prompt: promptRestrictions,\n    restrictions_process_only: allRestrictions.filter(r => !promptRestrictions.includes(r)),\n    warnings: warnings\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        -816
+      ],
+      "id": "97e8ae29-0dd5-4f2c-9f20-defb63863528",
+      "name": "Build prompt"
+    },
+    {
+      "parameters": {
+        "fileSelector": "<N8N_FILES_DIR>\\demo_reference_jacket.jpg",
+        "options": {
+          "dataPropertyName": "reference_image"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -816
+      ],
+      "id": "d60c3fb9-335f-4633-bdfd-1680cfcac9b9",
+      "name": "Read reference image"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "edit",
+        "modelId": {
+          "__rl": true,
+          "value": "gemini-nano-banana-2.1",
+          "mode": "id"
+        },
+        "prompt": "={{ $('Build prompt').first().json.prompt }}",
+        "images": {
+          "values": [
+            {
+              "binaryPropertyName": "reference_image"
+            }
+          ]
+        },
+        "options": {
+          "binaryPropertyOutput": "generated_image"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -224,
+        -816
+      ],
+      "id": "5cdc19df-d4bb-4501-a2d6-0720dd7d839c",
+      "name": "Generate ad image (Gemini)",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst p = $('Build prompt').first().json;\n\nconst generated = !!(item.binary && item.binary.generated_image);\nconst standIn = item.binary && item.binary.reference_image;\nif (!generated && !standIn) {\n  throw new Error('No image found: neither generated_image nor reference_image is present');\n}\n\nconst metadata = {\n  generation_status: generated ? 'generated' : 'dry_run',\n  image_note: generated\n    ? 'Image generated by the provider from the prompt and the reference image. Pending human review.'\n    : 'DRY RUN: no image generation call was made. The image is the reference photo, not a generated ad.',\n  provider: generated ? 'gemini' : null,\n  model: generated ? 'gemini-nano-banana-2.1' : null,\n  created_at: new Date().toISOString(),\n  mode: p.brief.mode,\n  garment_type: p.brief.garment_type,\n  department: p.brief.department,\n  season: p.brief.season,\n  approach: p.approach,\n  color_harmony: p.color_harmony,\n  format: p.format,\n  prompt: p.prompt,\n  label: p.label_restriction,\n  demo_note: p.brief.mode === 'demo'\n    ? 'Demo mode: the reference image is not the TheLook product referenced in the brief.'\n    : null,\n  rules_version: p.rules_version,\n  warnings: p.warnings,\n  human_review_required: true,\n  human_review_decision: null\n};\n\nreturn [{\n  json: { metadata: metadata },\n  binary: { review_image: generated ? item.binary.generated_image : standIn }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        0,
+        -816
+      ],
+      "id": "48f34669-b870-4ae2-8e8e-96a503a060d6",
+      "name": "Mark generation status"
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "Review generated ad image",
+        "formDescription": "View the image in the previous node (Mark generation status > Binary > review_image). Approve only if it matches the brief and shows no logos, brand names, real identifiable people, price or performance claims, and the product is not altered or invented.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "decision",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Reject"
+                  },
+                  {
+                    "option": "Approve"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Comment",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        432,
+        -816
+      ],
+      "id": "d40d68cd-1462-460c-9486-f3c1e2de0856",
+      "name": "Human review",
+      "webhookId": "64f1aee0-e7db-4cd5-976f-a97d58491f5e"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b0390f13-977f-4131-bd04-254cfb2c1090",
+              "name": "review_form_url",
+              "value": "={{ $execution.resumeFormUrl }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        -816
+      ],
+      "id": "71c586b0-0ee1-4d5b-a616-7e67c3223a2f",
+      "name": "review from url"
+    },
+    {
+      "parameters": {
+        "jsCode": "const review = $input.first().json;\nconst prev = $('Mark generation status').first();\nconst metadata = { ...prev.json.metadata };\n\nconst decision = review.decision;\nif (!['Approve', 'Reject'].includes(decision)) {\n  throw new Error('decision must be \"Approve\" or \"Reject\", got: ' + decision);\n}\n\nmetadata.human_review_decision = decision;\nmetadata.human_review_comment = review.Comment || null;\nmetadata.human_reviewed_at = new Date().toISOString();\n\nreturn [{\n  json: { approved: decision === 'Approve', metadata: metadata },\n  binary: prev.binary\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        -816
+      ],
+      "id": "b519ee15-e8cc-4df4-8ecb-51addfe0256d",
+      "name": "Apply review decision"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "bec3c9b9-fe7b-44f1-9585-615eb3e658b2",
+              "leftValue": "={{ $json.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        880,
+        -816
+      ],
+      "id": "ff08ca02-478f-4679-bb6d-d7f1a94f576b",
+      "name": "Approved?"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst metadata = { ...item.json.metadata };\n\nconst clean = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');\nconst status = String(metadata.generation_status).replace(/_/g, '').toUpperCase();\nconst stamp = metadata.human_reviewed_at.replace(/[:.]/g, '-');\n\nconst img = item.binary && item.binary.review_image;\nif (!img) { throw new Error('review_image binary is missing'); }\nconst ext = img.fileExtension || 'jpg';\n\nconst base = 'ad_' + clean(metadata.format.name) + '_' + clean(metadata.season) + '_' + status + '_' + stamp;\nconst imageFileName = base + '.' + ext;\nconst metadataFileName = base + '.json';\n\nmetadata.output_image_file = imageFileName;\nmetadata.output_metadata_file = metadataFileName;\n\nreturn [{\n  json: { metadata: metadata, image_file_name: imageFileName, metadata_file_name: metadataFileName },\n  binary: item.binary\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        -912
+      ],
+      "id": "09cab121-3151-4789-8517-498a83808e12",
+      "name": "Prepare output files"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=<N8N_FILES_DIR>/outputs/{{ $json.image_file_name }}",
+        "dataPropertyName": "=review_image",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1328,
+        -912
+      ],
+      "id": "127091ae-167c-4aad-9277-6ab97594684e",
+      "name": "Save image"
+    },
+    {
+      "parameters": {
+        "jsCode": "const prep = $('Prepare output files').first().json;\nconst text = JSON.stringify(prep.metadata, null, 2);\n\nconst file = await this.helpers.prepareBinaryData(\n  Buffer.from(text, 'utf8'),\n  prep.metadata_file_name,\n  'application/json'\n);\n\nreturn [{\n  json: { metadata_file_name: prep.metadata_file_name },\n  binary: { metadata_file: file }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1552,
+        -912
+      ],
+      "id": "cd8ba4b2-2c75-4264-bc2c-045151813591",
+      "name": "Build metadata file"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=<N8N_FILES_DIR>/outputs/{{ $json.metadata_file_name }}",
+        "dataPropertyName": "metadata_file",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1.1,
+      "position": [
+        1776,
+        -912
+      ],
+      "id": "e05abee0-74f9-4d4d-b626-7c48a1fa2740",
+      "name": "Save metadata"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -720
+      ],
+      "id": "549540d1-369d-4463-9147-8a595efea2d8",
+      "name": "Rejected - nothing saved"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief": {
+      "main": [
+        [
+          {
+            "node": "Validate brief",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate brief": {
+      "main": [
+        [
+          {
+            "node": "Brief valid?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brief valid?": {
+      "main": [
+        [
+          {
+            "node": "Read creative rules",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read creative rules": {
+      "main": [
+        [
+          {
+            "node": "Parse creative rules",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse creative rules": {
+      "main": [
+        [
+          {
+            "node": "Build prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build prompt": {
+      "main": [
+        [
+          {
+            "node": "Read reference image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read reference image": {
+      "main": [
+        [
+          {
+            "node": "Generate ad image (Gemini)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate ad image (Gemini)": {
+      "main": [
+        [
+          {
+            "node": "Mark generation status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark generation status": {
+      "main": [
+        [
+          {
+            "node": "review from url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "review from url": {
+      "main": [
+        [
+          {
+            "node": "Human review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human review": {
+      "main": [
+        [
+          {
+            "node": "Apply review decision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Apply review decision": {
+      "main": [
+        [
+          {
+            "node": "Approved?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved?": {
+      "main": [
+        [
+          {
+            "node": "Prepare output files",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rejected - nothing saved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare output files": {
+      "main": [
+        [
+          {
+            "node": "Save image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save image": {
+      "main": [
+        [
+          {
+            "node": "Build metadata file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build metadata file": {
+      "main": [
+        [
+          {
+            "node": "Save metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "097e5595-53c3-4082-b8ac-5e699614c54f",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "nodeGroups": [],
+  "id": "zT8J1cW8RAcvVjo7",
+  "tags": []
+}
